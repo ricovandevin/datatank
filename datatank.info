@@ -1,0 +1,13 @@
+name = Datatank
+description = Creates entities for Datatanks and Datasets, with import functionality.
+core = 7.x
+package = Datatank
+
+dependencies[] = entity
+
+files[] = classes/DatatankEntity.class.php
+files[] = classes/DatatankController.class.php
+files[] = classes/DatatankUIController.class.php
+files[] = classes/DatatankDatasetEntity.class.php
+files[] = classes/DatatankDatasetController.class.php
+files[] = classes/DatatankDatasetUIController.class.php

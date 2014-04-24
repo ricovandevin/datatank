@@ -1,0 +1,377 @@
+<?php
+
+module_load_include('inc', 'datatank', 'datatank.entity');
+module_load_include('inc', 'datatank', 'datatank.theme');
+module_load_include('inc', 'datatank', 'datatank.admin');
+
+function datatank_init() {
+
+}
+
+/**
+ * Implements hook_menu().
+ */
+function datatank_menu() {
+  $items = array();
+
+  $items['datatank/%datatank'] = array(
+    'title' => 'Datatank',
+    'page callback' => 'datatank_view_entity',
+    'page arguments' => array(1),
+    'access callback' => 'datatank_menu_access_callback',
+    'access arguments' => array('view', 1),
+  );
+
+  $items['datatank/%datatank/view'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  $items['datatank/%datatank/edit'] = array(
+    'title' => 'Edit',
+    'page callback' => 'entity_ui_get_form',
+    'page arguments' => array('datatank', 1),
+    'access callback' => 'datatank_menu_access_callback',
+    'access arguments' => array('edit', 1),
+    'file' => 'datatank.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
+  $items['datatank/%datatank/datasets'] = array(
+    'title' => 'Datasets',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('datatank_dataset_list_form', 1),
+    'access callback' => 'datatank_menu_access_callback',
+    'access arguments' => array('edit', 1),
+    'file' => 'datatank.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
+  $items['admin/structure/datatank'] = array(
+    'title' => 'Datatanks',
+    'description' => 'Manage fields and display options for datatanks.',
+    'page callback' => 'datatank_admin_info_page',
+    'access arguments' => array('access content'), //todo edit this
+    'file' => 'datatank.admin.inc',
+  );
+
+  $items['admin/structure/datatank/info'] = array(
+    'title' => 'Info',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  $items['dataset/%datatank_dataset'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'datatank_dataset_view_entity',
+    'page arguments' => array(1),
+    'access callback' => 'datatank_dataset_menu_access_callback',
+    'access arguments' => array('view', 1),
+  );
+
+  $items['dataset/%datatank_dataset/view'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  $items['dataset/%datatank_dataset/edit'] = array(
+    'title' => 'Edit',
+    'page callback' => 'entity_ui_get_form',
+    'page arguments' => array('datatank_dataset', 1),
+    'access callback' => 'datatank_dataset_menu_access_callback',
+    'access arguments' => array('edit', 1),
+    'file' => 'datatank.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
+  $items['admin/structure/datatank_dataset'] = array(
+    'title' => 'Datasets',
+    'description' => 'Manage fields and display options for datasets.',
+    'page callback' => 'datatank_dataset_admin_info_page',
+    'access arguments' => array('access content'), //todo edit this
+    'file' => 'datatank.admin.inc',
+  );
+
+  $items['admin/structure/datatank_dataset/info'] = array(
+    'title' => 'Info',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function datatank_menu_alter(&$items) {
+  // Do not allow datasets to be added manually.
+  unset($items['admin/content/datatank/dataset/add']);
+}
+
+/**
+ * Implements hook_permission().
+ */
+function datatank_permission() {
+  return array(
+    'administer datatank entities' => array(
+      'title' => t('Administer datatank entities'),
+      'description' => t('Allows a user to administer datatank entities'),
+    ),
+    'view datatank entities' => array(
+      'title' => t('View datatank entities'),
+      'description' => t('Allows a user to view the datatank entities.'),
+    ),
+    'create datatank entities' => array(
+      'title' => t('Create datatank entities'),
+      'description' => t('Allows a user to create datatank entities.'),
+    ),
+    'edit datatank entities' => array(
+      'title' => t('Edit datatank entities'),
+      'description' => t('Allows a user to edit datatank entities.'),
+    ),
+    'delete datatank entities' => array(
+      'title' => t('Delete datatank entities'),
+      'description' => t('Allows a user to delete datatank entities.'),
+    ),
+    'use datatank bulk operations' => array(
+      'title' => t('Do bulk operations on datatank entities'),
+      'description' => t('Allows a user to do bulk operations on datatank entities.'),
+    ),
+    'administer dataset entities' => array(
+      'title' => t('Administer dataset entities'),
+      'description' => t('Allows a user to administer dataset entities'),
+    ),
+    'view dataset entities' => array(
+      'title' => t('View dataset entities'),
+      'description' => t('Allows a user to view the dataset entities.'),
+    ),
+    'view unpublished dataset entities' => array(
+      'title' => t('View unpublished dataset entities'),
+      'description' => t('Allows a user to view unpublished dataset entities.'),
+    ),
+    'create dataset entities' => array(
+      'title' => t('Create dataset entities'),
+      'description' => t('Allows a user to create dataset entities.'),
+    ),
+    'edit dataset entities' => array(
+      'title' => t('Edit dataset entities'),
+      'description' => t('Allows a user to edit dataset entities.'),
+    ),
+    'delete dataset entities' => array(
+      'title' => t('Delete dataset entities'),
+      'description' => t('Allows a user to delete dataset entities.'),
+    ),
+    'use dataset bulk operations' => array(
+      'title' => t('Do bulk operations on dataset entities'),
+      'description' => t('Allows a user to do bulk operations on dataset entities.'),
+    ),
+  );
+}
+
+
+
+/**
+ * Implements hook_cron().
+ */
+function datatank_cron() {
+  // Get all the datatanks.
+  $datatanks = datatank_load_all();
+  foreach ($datatanks as $datatank) {
+
+    // This datatank should not be synchronized.
+    if ($datatank->sync_frequency < 1) {
+      continue;
+    }
+
+    // The datatank was last synchronized on a timestamp that is more than
+    // the frequency ago, so synchronize the datatank again.
+    if (time() - $datatank->last_sync >= $datatank->sync_frequency) {
+      if (datatank_synchronize_datasets($datatank)) {
+        watchdog('datatank', 'Datatank %datatank synchronized with cron', array('%datatank' => $datatank->title), WATCHDOG_INFO);
+      }
+    }
+  }
+
+}
+
+/**
+ * Menu access callback.
+ */
+function datatank_menu_access_callback($op, $datatank = NULL, $account = NULL) {
+  return user_access($op . ' datatank entities', $account);
+}
+
+/**
+ * Menu access callback.
+ */
+function datatank_dataset_menu_access_callback($op, $dataset = NULL, $account = NULL) {
+  return user_access($op . ' dataset entities', $account);
+}
+
+/**
+ * Implements hook_admin_paths().
+ */
+function datatank_admin_paths() {
+  if (variable_get('node_admin_theme')) {
+    $paths = array(
+      'datatank/*/edit' => TRUE,
+      'datatank/*/delete' => TRUE,
+      'datatank/*/datasets' => TRUE,
+      'dataset/*/edit' => TRUE,
+      'dataset/*/delete' => TRUE,
+    );
+    return $paths;
+  }
+}
+
+/**
+ * Import/update datasets for a given datatank.
+ */
+function datatank_synchronize_datasets($datatank) {
+
+  // Load the datatank if only the did was provided.
+  if (is_numeric($datatank)) {
+    $datatank = datatank_load($datatank);
+  }
+
+  // Load the datatank and create the request url.
+  $request_url = $datatank->url . ':8080/api/info';
+
+  // Do the request.
+  $response = datatank_request($request_url, $datatank->auth_user, $datatank->auth_pass);
+
+  // Response is empty, so the request failed.
+  if (!$response) {
+    watchdog('datatank', 'Request to %request_url failed. URL could not be reached.', array('%request_url' => $request_url), WATCHDOG_ERROR);
+    return;
+  }
+
+  // If the request did not succeed, or the datatank returned an error,
+  // log to watchdog and bail out.
+  if (!empty($response['error'])) {
+    $t = array('%datatank' => $datatank->title, '%type' => $response['error']['type'], '%message' => $response['error']['message']);
+    $message = 'Unable to synchronize datatank %datatank. Error type: %type. Error message: %message';
+    drupal_set_message(t($message, $t), 'error');
+    watchdog('datatank', $message, $t, WATCHDOG_ALERT);
+    return FALSE;
+  }
+
+  // First we determine if we have to unpublish/delete any datasets that
+  // have been orphaned.
+  if ($datasets = datatank_dataset_load_by_datatank($datatank->did)) {
+    foreach ($datasets as $dataset) {
+      if (!isset($response[$dataset->identifier])) {
+        if ($datatank->delete_orphaned) {
+          watchdog('datatank', 'Dataset %identifier was orphaned and deleted.', array('%identifier' => $dataset->identifier), WATCHDOG_INFO);
+          entity_delete('datatank_dataset', $dataset->dsid);
+        }
+        else {
+          watchdog('datatank', 'Dataset %identifier was orphaned and unpublished.', array('%identifier' => $dataset->identifier), WATCHDOG_INFO);
+          $dataset->status = 0;
+          $dataset->orphaned = 1;
+          entity_save('datatank_dataset', $dataset);
+        }
+      }
+    }
+  }
+
+  // Iterate through the array and create/update the datasets.
+  foreach ($response as $identifier => $dataset_info) {
+
+    // Skip the DCAT dataset.
+    if ($identifier == 'dcat') {
+      continue;
+    }
+
+    // Load the existing dataset, or create a new entity.
+    if (!$dataset = datatank_dataset_load_by_identifier($datatank->did, $identifier)) {
+      $dataset = entity_create('datatank_dataset', array());
+      if ($datatank->publish_new) {
+        $dataset->status = 1;
+      }
+    }
+    // Set all the properties.
+    $dataset->did = $datatank->did;
+    $dataset->identifier = $identifier;
+    $dataset->description = $dataset_info['description'];
+    $dataset->title = $dataset_info['title'] ?: $identifier;
+    $dataset->date = $dataset_info['date'] ?: '';
+    $dataset->type = $dataset_info['type'] ?: '';
+    $dataset->format = $dataset_info['format'] ?: '';
+    $dataset->source = $dataset_info['source'] ?: '';
+    $dataset->dataset_language = $dataset_info['language'] ?: '';
+    $dataset->rights = $dataset_info['rights'] ?: '';
+    $dataset->orphaned = 0;
+    // Save the entity.
+    entity_save('datatank_dataset', $dataset);
+  }
+
+  $datatank->last_sync = time();
+  entity_save('datatank', $datatank);
+
+  return TRUE;
+}
+
+/**
+ * Perform a request to a url with provided user/pass.
+ *
+ * @param string $url
+ *   The URL to send the request to.
+ * @param string $username
+ *   Optional username in case authentication is required.
+ * @param string $password
+ *   Optional password in case authentication is required.
+ *
+ * @return array $response
+ *   The JSON-decoded response array.
+ */
+function datatank_request($url, $username = '', $password = '') {
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  if (!empty($username) && !empty($password)) {
+    curl_setopt($ch, CURLOPT_USERPWD, $username . ':' . $password);
+  }
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  $response = curl_exec($ch);
+  if (empty($response)) {
+    return FALSE;
+  }
+  return drupal_json_decode($response);
+}
+
+/**
+ * Generate an array of download links for a dataset.
+ *
+ * @param $dataset
+ *   Dataset entity of an id of a dataset entity.
+ *
+ * @return array $links
+ */
+function datatank_dataset_download_links($dataset) {
+  $links = array();
+
+  if (is_numeric($dataset)) {
+    $dataset = datatank_dataset_load($dataset);
+  }
+
+  $datatank = datatank_load($dataset->did);
+  $base_url = $datatank->url . '/' . $dataset->identifier . '.';
+
+  $formats = array(
+    'json' => 'json',
+    'xml' => 'xml',
+    'csv' => 'csv',
+    'php' => 'php'
+  );
+  foreach ($formats as $ext => $format) {
+    $links[] = l($format, $base_url . $ext, array('attributes' => array('class' => array('data-link-' . $ext, 'data-link'))));
+  }
+
+  return $links;
+}

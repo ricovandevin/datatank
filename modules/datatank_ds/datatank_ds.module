@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Expose datatank and dataset entity properties as fields to be used by Display Suite.
+ */
+
+/**
+ * Implements hook_ds_field_settings_form().
+ */
+function datatank_ds_ds_field_settings_form($field) {
+  return ds_ds_field_settings_form($field);
+}
+
+/**
+ * Implements hook_ds_field_format_summary().
+ */
+function datatank_ds_ds_field_format_summary($field) {
+  $summary = ds_ds_field_format_summary($field);
+  $summary = ($summary != '') ? $summary : t('Use default') . '<br>';
+  return $summary;
+}
+
+/**
+ * Render a generic text property.
+ */
+function datatank_ds_render_text_property($field) {
+  $datatank = $field['entity'];
+  if (!empty($datatank->{$field['field_name']})) {
+    return $datatank->{$field['field_name']};
+  }
+  return FALSE;
+}
+
+/**
+ * Render the datatank url.
+ */
+function datatank_ds_render_url($field) {
+  $datatank = $field['entity'];
+  if ($field['formatter'] == 'plain_text') {
+    return $datatank->url;
+  }
+  return l($datatank->url, $datatank->url);
+}
+
+function datatank_ds_generic_property($field) {
+  return check_plain($field['entity']->{$field['field_name']});
+}
+
+function datatank_ds_dataset_url($field) {
+  $datatank = datatank_load($field['entity']->did);
+  $url = $datatank->url . '/';
+  $url .= $field['entity']->identifier;
+  return l($url, $url);
+}
+
+function datatank_ds_dataset_more($field) {
+  return l(t('More info'), 'dataset/' . $field['entity']->dsid);
+}
+
+function datatank_ds_dataset_data_links($field) {
+  $links = datatank_dataset_download_links($field['entity']);
+  return theme('item_list', array('items' => $links));
+}
