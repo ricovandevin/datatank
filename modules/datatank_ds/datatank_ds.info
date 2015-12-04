@@ -1,7 +1,0 @@
-name = Datatank Display Suite
-description = Expose datatank and dataset entity properties as fields to be used by Display Suite.
-core = 7.x
-package = Datatank
-
-dependencies[] = datatank
-dependencies[] = ds

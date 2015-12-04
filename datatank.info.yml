@@ -1,0 +1,6 @@
+name: Datatank
+description: Creates entities for Datatanks and Datasets, with import functionality.
+package: Datatank
+
+type: module
+core: 8.x
