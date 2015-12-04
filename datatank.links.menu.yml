@@ -1,0 +1,11 @@
+entity.datatank_column.collection:
+  title: 'TheDataTank: Columns Listing'
+  route_name: entity.datatank_column.collection
+  description: 'List Columns'
+  weight: 10
+
+datatank_column.admin.structure.settings:
+  title: 'TheDataTank: Column Settings'
+  description: 'Configure Column entity'
+  route_name:  datatank.column_settings
+  parent: system.admin_structure

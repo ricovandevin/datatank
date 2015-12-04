@@ -1,0 +1,6 @@
+datatank.column_add:
+  route_name: datatank.column_add
+  title: 'Add Column'
+  appears_on:
+    - entity.datatank_column.collection
+    - entity.datatank_column.canonical

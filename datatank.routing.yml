@@ -1,0 +1,47 @@
+entity.datatank_column.canonical:
+  path: '/datatank_column/{datatank_column}'
+  defaults:
+    _entity_view: 'datatank_column'
+    _title: 'Column'
+  requirements:
+    _entity_access: 'datatank_column.view'
+
+entity.datatank_column.collection:
+  path: '/datatank_column/list'
+  defaults:
+    _entity_list: 'datatank_column'
+    _title: 'Columns'
+  requirements:
+    _permission: 'view datatank_column entity'
+
+content_entity_example.Column_add:
+  path: '/datatank_column/add'
+  defaults:
+    _entity_form: datatank_column.add
+    _title: 'Add Column'
+  requirements:
+    _entity_create_access: 'datatank_column'
+
+entity.datatank_column.edit_form:
+  path: '/datatank_column/{datatank_column}/edit'
+  defaults:
+    _entity_form: datatank_column.edit
+    _title: 'Edit Column'
+  requirements:
+    _entity_access: 'datatank_column.edit'
+
+entity.datatank_column.delete_form:
+  path: '/Column/{datatank_column}/delete'
+  defaults:
+    _entity_form: datatank_column.delete
+    _title: 'Delete Column'
+  requirements:
+    _entity_access: 'datatank_column.delete'
+
+datatank.column_settings:
+  path: 'admin/structure/datatank_column_settings'
+  defaults:
+    _form: '\Drupal\datatank\Form\ColumnSettingsForm'
+    _title: 'Column Settings'
+  requirements:
+    _permission: 'administer datatank_column entity'

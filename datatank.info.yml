@@ -4,3 +4,6 @@ package: Datatank
 
 type: module
 core: 8.x
+
+dependencies:
+  - entity_reference
