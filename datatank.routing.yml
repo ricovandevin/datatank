@@ -14,7 +14,7 @@ entity.datatank_column.collection:
   requirements:
     _permission: 'view datatank_column entity'
 
-content_entity_example.Column_add:
+datatank.column_add:
   path: '/datatank_column/add'
   defaults:
     _entity_form: datatank_column.add
