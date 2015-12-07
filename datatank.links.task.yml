@@ -1,20 +1,44 @@
+#Column
 datatank_column.settings_tab:
   route_name: datatank.column_settings
   title: Settings
   base_route: datatank.column_settings
 
 datatank_column.view:
-  route_name: entity.datatank_contact.canonical
-  base_route: entity.datatank_contact.canonical
+  route_name: entity.datatank_column.canonical
+  base_route: entity.datatank_column.canonical
   title: View
 
 datatank_column.page_edit:
-  route_name: entity.datatank_contact.edit_form
-  base_route: entity.datatank_contact.canonical
+  route_name: entity.datatank_column.edit_form
+  base_route: entity.datatank_column.canonical
   title: Edit
 
 datatank_column.delete_confirm:
-  route_name:  entity.datatank_contact.delete_form
-  base_route:  entity.datatank_contact.canonical
+  route_name:  entity.datatank_column.delete_form
+  base_route:  entity.datatank_column-.canonical
+  title: Delete
+  weight: 10
+
+
+#Parameter
+datatank_parameter.settings_tab:
+  route_name: datatank.parameter_settings
+  title: Settings
+  base_route: datatank.parameter_settings
+
+datatank_parameter.view:
+  route_name: entity.datatank_parameter.canonical
+  base_route: entity.datatank_parameter.canonical
+  title: View
+
+datatank_parameter.page_edit:
+  route_name: entity.datatank_parameter.edit_form
+  base_route: entity.datatank_parameter.canonical
+  title: Edit
+
+datatank_parameter.delete_confirm:
+  route_name:  entity.datatank_parameter.delete_form
+  base_route:  entity.datatank_parameter.canonical
   title: Delete
   weight: 10

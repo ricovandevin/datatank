@@ -12,17 +12,17 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 
 /**
- * Provides a form for deleting a datatank_column entity.
+ * Provides a form for deleting a datatank_parameter entity.
  *
  * @ingroup datatank
  */
-class ColumnDeleteForm extends ContentEntityConfirmFormBase {
+class ParameterDeleteForm extends ContentEntityConfirmFormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure you want to delete Column %name?', array('%name' => $this->entity->label()));
+    return $this->t('Are you sure you want to delete Parameter %name?', array('%name' => $this->entity->label()));
   }
 
   /**
@@ -31,7 +31,7 @@ class ColumnDeleteForm extends ContentEntityConfirmFormBase {
    * If the delete command is canceled, return to the contact list.
    */
   public function getCancelURL() {
-    return new Url('entity.datatank_column.collection');
+    return new Url('entity.datatank_parameter.collection');
   }
 
   /**
@@ -55,7 +55,7 @@ class ColumnDeleteForm extends ContentEntityConfirmFormBase {
         '@type' => $this->entity->bundle(),
         '%title' => $this->entity->label(),
       ));
-    $form_state->setRedirect('entity.datatank_column.collection');
+    $form_state->setRedirect('entity.datatank_parameter.collection');
   }
 
 }

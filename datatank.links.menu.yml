@@ -1,11 +1,39 @@
-entity.datatank_column.collection:
-  title: 'TheDataTank: Columns Listing'
-  route_name: entity.datatank_column.collection
-  description: 'List Columns'
-  weight: 10
-
-datatank_column.admin.structure.settings:
-  title: 'TheDataTank: Column Settings'
-  description: 'Configure Column entity'
+#Global
+datatank.settings:
+  title: 'TheDataTank'
+  description: 'Configure DataTank'
   route_name:  datatank.column_settings
   parent: system.admin_structure
+
+datatank.content:
+  title: 'TheDataTank'
+  description: 'DataTank Content'
+  route_name: entity.datatank_column.collection
+  parent: system.admin_content
+
+#Column
+datatank.column_settings:
+  title: 'Columns'
+  description: 'Configure Columns'
+  route_name:  datatank.column_settings
+  parent: datatank.settings
+
+entity.datatank_column.collection:
+  title: 'Columns'
+  description: 'List Columns'
+  route_name: entity.datatank_column.collection
+  parent: datatank.content
+
+#Parameter
+datatank.parameter_settings:
+  title: 'Parameters'
+  description: 'Configure Parameters'
+  route_name:  datatank.parameter_settings
+  parent: datatank.settings
+
+entity.datatank_parameter.collection:
+  title: 'Parameter'
+  description: 'List Parameters'
+  route_name: entity.datatank_parameter.collection
+  parent: datatank.content
+

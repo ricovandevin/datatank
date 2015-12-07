@@ -42,9 +42,9 @@ use Drupal\user\UserInterface;
  *     "langcode" = "langcode"
  *   },
  *   links = {
- *     "canonical" = "/datatank_column/{datatank_column}",
- *     "edit-form" = "/datatank_column/{datatank_column}/edit",
- *     "delete-form" = "/datatank_column/{datatank_column}/delete",
+ *     "canonical" = "/admin/content/datatank_column/{datatank_column}",
+ *     "edit-form" = "/admin/content/datatank_column/{datatank_column}/edit",
+ *     "delete-form" = "/admin/content/datatank_column/{datatank_column}/delete",
  *     "collection" = "/datatank_column/list"
  *   },
  *   field_ui_base_route = "datatank.column_settings",

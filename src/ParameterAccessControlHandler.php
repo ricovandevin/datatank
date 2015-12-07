@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\node\ColumnAccessControlHandler.
+ * Contains \Drupal\node\ParameterAccessControlHandler.
  */
 
 namespace Drupal\datatank;
@@ -18,12 +18,12 @@ use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines the access control handler for the Datatank Column Entity.
+ * Defines the access control handler for the Parameter Datatatank Entity.
  *
- * @see \datatank\entity\Column
+ * @see \datatank\entity\Parameter
  * @ingroup node_access
  */
-class ColumnAccessControlHandler extends EntityAccessControlHandler {
+class ParameterAccessControlHandler extends EntityAccessControlHandler {
 
   /**
    * {@inheritdoc}

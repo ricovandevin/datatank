@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\datatank\Form\ColumnSettingsForm.
+ * Contains Drupal\datatank\Form\ParameterSettingsForm.
  */
 
 namespace Drupal\datatank\Form;
@@ -11,11 +11,11 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class ColumnSettingsForm.
+ * Class ParameterSettingsForm.
  *
  * @ingroup datatank
  */
-class ColumnSettingsForm extends FormBase {
+class ParameterSettingsForm extends FormBase {
 
   /**
    * Returns a unique string identifying the form.
@@ -24,7 +24,7 @@ class ColumnSettingsForm extends FormBase {
    *   The unique string identifying the form.
    */
   public function getFormId() {
-    return 'datatank_column_settings';
+    return 'datatank_parameter_settings';
   }
 
   /**
@@ -38,8 +38,8 @@ class ColumnSettingsForm extends FormBase {
    *   An associative array containing the current state of the form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['choose_columns'] = array(
-      '#title' => 'Choose your columns',
+    $form['choose_params'] = array(
+      '#title' => 'Choose your Params',
       '#type' => 'checkbox'
     );
 
