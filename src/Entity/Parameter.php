@@ -166,7 +166,7 @@ class Parameter extends ContentEntityBase implements ParameterInterface {
       ))
       ->setDisplayOptions('view', array(
         'label' => 'above',
-        'type' => 'string',
+        'type' => 'string_textfield',
         'weight' => -5,
       ))
       ->setDisplayOptions('form', array(
