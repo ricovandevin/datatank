@@ -13,6 +13,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\datatank\DatasetInterface;
 use Drupal\user\UserInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Defines the Dataset entity.
@@ -159,7 +160,8 @@ class Dataset extends ContentEntityBase implements DatasetInterface {
         'weight' => -3,
       ))
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('view', TRUE)
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
 
 
     // Reference to Column.
@@ -184,7 +186,8 @@ class Dataset extends ContentEntityBase implements DatasetInterface {
         'weight' => -3,
       ))
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('view', TRUE)
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
 
     $fields['langcode'] = BaseFieldDefinition::create('language')
       ->setLabel(t('Language code'))
