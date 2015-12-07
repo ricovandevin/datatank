@@ -95,3 +95,52 @@ datatank.parameter_settings:
     _title: 'Parameter Settings'
   requirements:
     _permission: 'administer datatank_parameter entity'
+
+#Databank Dataset
+entity.datatank_dataset.canonical:
+  path: '/datatank/dataset/{datatank_dataset}'
+  defaults:
+    _entity_view: 'datatank_dataset'
+    _title: 'Dataset'
+  requirements:
+    _entity_access: 'datatank_dataset.view'
+
+entity.datatank_dataset.collection:
+  path: '/admin/content/datatank/dataset/list'
+  defaults:
+    _entity_list: 'datatank_dataset'
+    _title: 'Datatank: dataset'
+  requirements:
+    _permission: 'view datatank_dataset entity'
+
+datatank.dataset_add:
+  path: '/admin/content/datatank/dataset/add'
+  defaults:
+    _entity_form: datatank_dataset.add
+    _title: 'Add dataset'
+  requirements:
+    _entity_create_access: 'datatank_dataset'
+
+entity.datatank_dataset.edit_form:
+  path: '/admin/content/datatank/dataset/{datatank_dataset}/edit'
+  defaults:
+    _entity_form: datatank_dataset.edit
+    _title: 'Edit dataset'
+  requirements:
+    _entity_access: 'datatank_dataset.edit'
+
+entity.datatank_dataset.delete_form:
+  path: '/admin/content/datatank/dataset/{datatank_dataset}/delete'
+  defaults:
+    _entity_form: datatank_dataset.delete
+    _title: 'Delete dataset'
+  requirements:
+    _entity_access: 'datatank_dataset.delete'
+
+datatank.dataset_settings:
+  path: 'admin/structure/datatank/dataset_settings'
+  defaults:
+    _form: '\Drupal\datatank\Form\DatasetSettingsForm'
+    _title: 'Dataset Settings'
+  requirements:
+    _permission: 'administer datatank_dataset entity'

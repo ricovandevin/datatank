@@ -13,3 +13,11 @@ datatank.parameter_add:
   appears_on:
     - entity.datatank_parameter.collection
     - entity.datatank_parameter.canonical
+
+#Dataset
+datatank.dataset_add:
+  route_name: datatank.dataset_add
+  title: 'Add Dataset'
+  appears_on:
+    - entity.datatank_dataset.collection
+    - entity.datatank_dataset.canonical

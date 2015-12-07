@@ -37,3 +37,17 @@ entity.datatank_parameter.collection:
   route_name: entity.datatank_parameter.collection
   parent: datatank.content
 
+
+#Dataset
+datatank.dataset_settings:
+  title: 'Dataset'
+  description: 'Configure dataset'
+  route_name:  datatank.dataset_settings
+  parent: datatank.settings
+
+entity.datatank_dataset.collection:
+  title: 'Dataset'
+  description: 'List Datasets'
+  route_name: entity.datatank_dataset.collection
+  parent: datatank.content
+
