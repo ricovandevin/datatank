@@ -13,6 +13,8 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\tdt_client\Consumer;
+use Drupal\tdt_client\Config\DrupalConfig;
 
 /**
  * Class ColumnSettingsForm.
@@ -73,17 +75,43 @@ class DatasetSettingsForm extends FormBase {
    *   An associative array containing the current state of the form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $allowed_types = $this->configManager->get('enabled_dataset_fields');
-    dsm($allowed_types);
-    $form['choose_columns'] = array(
-      '#title' => 'Choose your datasets',
-      '#type' => 'checkboxes',
-      '#options' => [
-        'field_dataset_type' => 'type',
-        'field_dataset_licence' => 'licence'
-      ],
-      '#default_value' => $allowed_types
-    );
+    $created_fields = $this->getImportedFields();
+
+    $config = new DrupalConfig();
+    $consumer = new Consumer($config);
+
+    $datasets = $consumer->getDatasets();
+    $fields = [];
+    foreach ($datasets as $dataset) {
+      foreach ($dataset->getFields() as $name => $value) {
+        $fields['field_dataset_' . $name] = $name;
+      }
+    }
+
+    $form['created_fields'] = [
+      '#type' => 'markup',
+      '#markup' => '<h1>' . t('Already created fields') . '</h1><div> ' . implode(', ', array_keys($created_fields)) . '</div>',
+    ];
+
+    $form['choose_columns'] = [
+      '#prefix' => '<h1>Choose the fields you also want to import</h1>',
+      '#type' => 'container',
+      '#tree' => TRUE,
+    ];
+
+    foreach ($fields as $field_name => $label) {
+      if (!in_array($field_name, $created_fields)) {
+        $form['choose_columns'][$field_name] = array(
+          '#title' => $label,
+          '#type' => 'select',
+          '#options' => array(
+            0 => "Don't Import",
+            'string' => t('Textfield'),
+            'taxonomy' => t('Taxonomy terms')
+          ),
+        );
+      }
+    }
 
     $form['submit'] = array(
       '#type' => 'submit',
@@ -91,6 +119,22 @@ class DatasetSettingsForm extends FormBase {
     );
 
     return $form;
+  }
+
+  /**
+   * Get the imported fields
+   */
+  public function getImportedFields() {
+    $field_storage_definitions = $this->entityManager->getFieldStorageDefinitions('datatank_dataset');
+    $created_fields = $this->configManager->get('enabled_dataset_fields');
+    foreach ($created_fields as $field_name) {
+      if (!isset($field_storage_definitions[$field_name])) {
+        // Field was deleted
+        unset($created_fields[$field_name]);
+      }
+    }
+
+    return $created_fields;
   }
 
   /**
@@ -104,37 +148,24 @@ class DatasetSettingsForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
 
+    $created_fields = [];
     $field_storage_definitions = $this->entityManager->getFieldStorageDefinitions('datatank_dataset');
 
-    foreach ($values['choose_columns'] as $field_name => $active) {
-      if ($active) {
+    foreach ($values['choose_columns'] as $field_name => $type) {
+      if ($type) {
+
         if (!isset($field_storage_definitions[$field_name])) {
-          $field_storage_values = [
-            'field_name' => $field_name,
-            'entity_type' => 'datatank_dataset',
-            'type' => 'string',
-            'translatable' => TRUE,
-          ];
+          switch ($type) {
+            case "string" :
+              datatank_helper_create_textfield($this->entityManager, $field_name);
+              break;
 
-          $field_values = [
-            'field_name' => $field_name,
-            'entity_type' => 'datatank_dataset',
-            'bundle' => 'datatank_dataset',
-            'label' => $field_name,
-            'translatable' => TRUE,
-          ];
+            case "taxonomy" :
+              datatank_helper_create_taxonomyfield('datatank_dataset', 'datatank_dataset', $field_name, $field_name, 'taxonomy_term', 'default', -1);
+              break;
+          }
 
-          $this->entityManager->getStorage('field_storage_config')
-            ->create($field_storage_values)
-            ->save();
-
-          $field = $this->entityManager->getStorage('field_config')
-            ->create($field_values);
-          $field->save();
-
-          entity_get_form_display('datatank_dataset', 'datatank_dataset', 'default')
-            ->setComponent($field_name, [])
-            ->save();
+          $created_fields[$field_name] = $field_name;
         }
       }
       /* else {
@@ -145,7 +176,7 @@ class DatasetSettingsForm extends FormBase {
        }*/
     }
 
-    $this->configManager->set('enabled_dataset_fields', $values['choose_columns']);
+    $this->configManager->set('enabled_dataset_fields', $created_fields);
     $this->configManager->save();
   }
 

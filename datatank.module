@@ -5,4 +5,92 @@
  * Contains datatank.module
  */
 
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\Core\Language\LanguageInterface;
 
+/**
+ * Helper function to create textfield
+ */
+function datatank_helper_create_textfield($entityManager, $field_name) {
+  $field_storage_values = [
+    'field_name' => $field_name,
+    'entity_type' => 'datatank_dataset',
+    'type' => 'string',
+    'translatable' => TRUE,
+  ];
+
+  $field_values = [
+    'field_name' => $field_name,
+    'entity_type' => 'datatank_dataset',
+    'bundle' => 'datatank_dataset',
+    'label' => $field_name,
+    'translatable' => TRUE,
+  ];
+
+  $entityManager->getStorage('field_storage_config')
+    ->create($field_storage_values)
+    ->save();
+
+  $field = $entityManager->getStorage('field_config')
+    ->create($field_values);
+  $field->save();
+
+  entity_get_form_display('datatank_dataset', 'datatank_dataset', 'default')
+    ->setComponent($field_name, [])
+    ->save();
+}
+
+/**
+ * Helper function to create taxonomy field
+ */
+function datatank_helper_create_taxonomyfield($entity_type, $bundle, $field_name, $field_label, $target_entity_type, $selection_handler = 'default', $cardinality = 1) {
+  $vocabulary = Vocabulary::load($field_name);
+
+  if (!$vocabulary) {
+    // Create a vocabulary
+    $vocabulary = Vocabulary::create(array(
+      'name' => 'DataTank Taxonomy terms for' . $field_name,
+      'vid' => strtolower($field_name),
+      'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+    ));
+    $vocabulary->save();
+  }
+
+  $handler_settings = array(
+    'target_bundles' => array(
+      $vocabulary->id() => $vocabulary->id(),
+    ),
+  );
+
+  // Create field
+  if (!FieldStorageConfig::loadByName($entity_type, $field_name)) {
+    FieldStorageConfig::create(array(
+      'field_name' => $field_name,
+      'type' => 'entity_reference',
+      'entity_type' => $entity_type,
+      'cardinality' => $cardinality,
+      'settings' => array(
+        'target_type' => $target_entity_type,
+      ),
+    ))->save();
+  }
+  if (!FieldConfig::loadByName($entity_type, $bundle, $field_name)) {
+    FieldConfig::create(array(
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'bundle' => $bundle,
+      'label' => $field_label,
+      'settings' => array(
+        'handler' => $selection_handler,
+        'handler_settings' => $handler_settings,
+      ),
+    ))->save();
+  }
+
+  entity_get_form_display($entity_type, $entity_type, 'default')
+    ->setComponent($field_name, [])
+    ->save();
+
+}
