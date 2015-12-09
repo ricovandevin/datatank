@@ -1,0 +1,11 @@
+# Migration configuration for Column migration.
+id: datatank_migrate_column
+label: Migrate the columns
+migration_group: datatank
+source:
+  plugin: ColumnMigration
+destination:
+  plugin: entity:datatank_column
+process:
+  name: column_name
+  documentation: documentation
