@@ -29,6 +29,7 @@ use Drupal\user\UserInterface;
  *     "translation" = "Drupal\datatank\ParameterTranslationHandler",
  *     "form" = {
  *       "add" = "Drupal\datatank\Form\ParameterForm",
+ *       "default" = "Drupal\datatank\Form\ParameterForm",
  *       "edit" = "Drupal\datatank\Form\ParameterForm",
  *       "delete" = "Drupal\datatank\Form\ParameterDeleteForm",
  *     },
@@ -39,6 +40,7 @@ use Drupal\user\UserInterface;
  *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "pid",
+ *     "label" = "name",
  *     "uuid" = "uuid",
  *     "langcode" = "langcode"
  *   },

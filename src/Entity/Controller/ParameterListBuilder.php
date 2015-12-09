@@ -23,7 +23,7 @@ class ParameterListBuilder extends EntityListBuilder {
    */
   public function buildHeader() {
     $header['id'] = $this->t('ID');
-    $header['column_name'] = $this->t('Name');
+    $header['param_name'] = $this->t('Name');
     $header['documentation'] = $this->t('Description');
     $header['required'] = $this->t('Required');
     $header['langcode'] = $this->t('Language');
@@ -36,9 +36,9 @@ class ParameterListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\datatank\Entity\Column */
     $row['id'] = $entity->id();
-    $row['column_name'] = $entity->link();
+    $row['param_name'] = $entity->link();
     $row['documentation'] = $entity->documentation->value;
-    $row['required'] = $entity->required->value ? t('Yes') : t('No');
+    $row['required'] = $entity->required->value ? t('Yees') : t('No');
     $row['langcode'] = $entity->langcode->value;
     return $row + parent::buildRow($entity);
   }

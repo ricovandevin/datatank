@@ -1,0 +1,18 @@
+# Migration configuration for Column migration.
+id: datatank_migrate_dataset
+label: Migrate the datasets
+migration_group: datatank
+source:
+  plugin: DatasetMigration
+destination:
+  plugin: entity:datatank_dataset
+process:
+  name: dataset_name
+  parameter_pid:
+    plugin: migration
+    migration: datatank_migrate_parameter
+    source: parameters
+  parameter_cid:
+    plugin: migration
+    migration: datatank_migrate_column
+    source: columns

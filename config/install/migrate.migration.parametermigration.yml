@@ -10,4 +10,3 @@ process:
   name: param_name
   documentation: documentation
   required: required
-  langcode: language
