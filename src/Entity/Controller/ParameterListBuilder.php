@@ -26,6 +26,7 @@ class ParameterListBuilder extends EntityListBuilder {
     $header['column_name'] = $this->t('Name');
     $header['documentation'] = $this->t('Description');
     $header['required'] = $this->t('Required');
+    $header['langcode'] = $this->t('Language');
     return $header + parent::buildHeader();
   }
 
@@ -38,6 +39,7 @@ class ParameterListBuilder extends EntityListBuilder {
     $row['column_name'] = $entity->link();
     $row['documentation'] = $entity->documentation->value;
     $row['required'] = $entity->required->value ? t('Yes') : t('No');
+    $row['langcode'] = $entity->langcode->value;
     return $row + parent::buildRow($entity);
   }
 

@@ -1,0 +1,13 @@
+# Migration configuration for Parameter migration.
+id: datatank_migrate_parameter
+label: Migrate the Parameters
+migration_group: datatank
+source:
+  plugin: ParameterMigration
+destination:
+  plugin: entity:datatank_parameter
+process:
+  name: param_name
+  documentation: documentation
+  required: required
+  langcode: language

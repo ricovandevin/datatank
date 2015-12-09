@@ -11,3 +11,5 @@ dependencies:
   - entity_reference
   - taxonomy
   - migrate
+  - migrate_plus
+  - migrate_tools

@@ -12,10 +12,10 @@ use Drupal\migrate\Row;
 
 /**
  * @MigrateSource(
- *   id = "ColumnMigration"
+ *   id = "ParameterMigration"
  * )
  */
-class ColumnMigration extends SourcePluginBase {
+class ParameterMigration extends SourcePluginBase {
 
   protected $ids;
 
@@ -24,11 +24,11 @@ class ColumnMigration extends SourcePluginBase {
     $consumer = new Consumer($config);
 
     $datasets = $consumer->getDatasets();
-    $columns = [];
+    $parameters = [];
     foreach ($datasets as $dataset) {
-      $columns = array_merge($dataset->getColumnsArray(), $columns);
+      $parameters = array_merge($dataset->getParameterArray(), $parameters);
     }
-    return new \ArrayIterator($columns);
+    return new \ArrayIterator($parameters);
   }
 
 
@@ -48,24 +48,22 @@ class ColumnMigration extends SourcePluginBase {
    */
   public function fields() {
     return [
-      'column_name' => t('Column name'),
-      'is_pk' => t('Is Primary key'),
-      'column_name_alias' => t('Column name alias'),
-      'index' => t('Index'),
+      'param_name' => t('Parameter unique name'),
+      'required' => t('Required field'),
       'documentation' => t('Documentation')
     ];
   }
 
   public function __toString() {
-    return t('DataTank migrate unique columns');
+    return t('DataTank migrate unique parameters');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getIds() {
-    $ids['column_name']['type'] = 'string';
-    $ids['column_name']['alias'] = 'column_name';
+    $ids['param_name']['type'] = 'string';
+    $ids['param_name']['alias'] = 'param_name';
     return $ids;
   }
 }

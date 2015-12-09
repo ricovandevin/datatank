@@ -12,6 +12,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\datatank\ParameterInterface;
+use Drupal\datatank\ParameterTranslationHandler;
 use Drupal\user\UserInterface;
 
 /**
@@ -25,6 +26,7 @@ use Drupal\user\UserInterface;
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\datatank\Entity\Controller\ParameterListBuilder",
+ *     "translation" = "Drupal\datatank\ParameterTranslationHandler",
  *     "form" = {
  *       "add" = "Drupal\datatank\Form\ParameterForm",
  *       "edit" = "Drupal\datatank\Form\ParameterForm",
@@ -34,10 +36,9 @@ use Drupal\user\UserInterface;
  *   },
  *   base_table = "datatank_parameter",
  *   admin_permission = "administer datatank_parameter entity",
- *   fieldable = FALSE,
+ *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "pid",
- *     "label" = "name",
  *     "uuid" = "uuid",
  *     "langcode" = "langcode"
  *   },
@@ -116,6 +117,7 @@ class Parameter extends ContentEntityBase implements ParameterInterface {
     $fields['documentation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Description'))
       ->setDescription(t('The description of the Parameter entity.'))
+      ->setTranslatable(TRUE)
       ->setSettings(array(
         'default_value' => '',
         'max_length' => 255,
@@ -179,7 +181,15 @@ class Parameter extends ContentEntityBase implements ParameterInterface {
 
     $fields['langcode'] = BaseFieldDefinition::create('language')
       ->setLabel(t('Language code'))
-      ->setDescription(t('The language code of Column entity.'));
+      ->setDescription(t('The language code of Column entity.'))
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', array(
+        'type' => 'hidden',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'language_select',
+        'weight' => 2,
+      ));
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
