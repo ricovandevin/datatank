@@ -80,13 +80,7 @@ class DatasetSettingsForm extends FormBase {
     $config = new DrupalConfig();
     $consumer = new Consumer($config);
 
-    $datasets = $consumer->getDatasets();
-    $fields = [];
-    foreach ($datasets as $dataset) {
-      foreach ($dataset->getFields() as $name => $value) {
-        $fields['field_dataset_' . $name] = $name;
-      }
-    }
+    $fields = $consumer->getUniqueFields('field_dataset_');
 
     $form['created_fields'] = [
       '#type' => 'markup',
@@ -119,22 +113,6 @@ class DatasetSettingsForm extends FormBase {
     );
 
     return $form;
-  }
-
-  /**
-   * Get the imported fields
-   */
-  public function getImportedFields() {
-    $field_storage_definitions = $this->entityManager->getFieldStorageDefinitions('datatank_dataset');
-    $created_fields = $this->configManager->get('enabled_dataset_fields');
-    foreach ($created_fields as $field_name) {
-      if (!isset($field_storage_definitions[$field_name])) {
-        // Field was deleted
-        unset($created_fields[$field_name]);
-      }
-    }
-
-    return $created_fields;
   }
 
   /**
@@ -178,6 +156,22 @@ class DatasetSettingsForm extends FormBase {
 
     $this->configManager->set('enabled_dataset_fields', $created_fields);
     $this->configManager->save();
+  }
+
+  /**
+   * Get the imported fields
+   */
+  public function getImportedFields() {
+    $field_storage_definitions = $this->entityManager->getFieldStorageDefinitions('datatank_dataset');
+    $created_fields = $this->configManager->get('enabled_dataset_fields');
+    foreach ($created_fields as $field_name) {
+      if (!isset($field_storage_definitions[$field_name])) {
+        // Field was deleted
+        unset($created_fields[$field_name]);
+      }
+    }
+
+    return $created_fields;
   }
 
 }

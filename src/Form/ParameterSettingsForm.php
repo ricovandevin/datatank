@@ -38,15 +38,7 @@ class ParameterSettingsForm extends FormBase {
    *   An associative array containing the current state of the form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['choose_params'] = array(
-      '#title' => 'Choose your Params',
-      '#type' => 'checkbox'
-    );
-
-    $form['submit'] = array(
-      '#type' => 'submit',
-      '#value' => t('Save'),
-    );
+    $form = [];
 
     return $form;
   }
