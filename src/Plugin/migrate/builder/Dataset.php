@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file
+ * Contains \Drupal\datatank\Plugin\migrate\builder\Dataset.
+ */
+
+namespace Drupal\datatank\Plugin\migrate\builder;
+
+use Drupal\migrate\Entity\Migration;
+use Drupal\migrate\Exception\RequirementsException;
+
+/**
+ * @PluginID("dataset")
+ */
+class Dataset {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildMigrations(array $template) {
+    $migrations = [];
+    print('buildMigrations DATATANK MODULE');
+    die();
+
+    // Read all CCK field instance definitions in the source database.
+    $fields = array();
+    $source_plugin = $this->getSourcePlugin('d6_field_instance', $template['source']);
+    try {
+      $source_plugin->checkRequirements();
+
+      foreach ($source_plugin as $field) {
+        $info = $field->getSource();
+        $fields[$info['type_name']][$info['field_name']] = $info;
+      }
+    }
+    catch (RequirementsException $e) {
+      // Don't do anything; $fields will be empty.
+    }
+
+    foreach ($this->getSourcePlugin('d6_node_type', $template['source']) as $row) {
+      $node_type = $row->getSourceProperty('type');
+      $values = $template;
+      $values['id'] = $template['id'] . '__' . $node_type;
+
+      $label = $template['label'];
+      $values['label'] = $this->t("@label (@type)", [
+        '@label' => $label,
+        '@type' => $node_type
+      ]);
+      $values['source']['node_type'] = $node_type;
+
+      // If this migration is based on the d6_node_revision template, it should
+      // explicitly depend on the corresponding d6_node variant.
+      if ($template['id'] == 'd6_node_revision') {
+        $values['migration_dependencies']['required'][] = 'd6_node__' . $node_type;
+      }
+
+      $migration = Migration::create($values);
+
+      if (isset($fields[$node_type])) {
+        foreach ($fields[$node_type] as $field => $info) {
+          if ($this->cckPluginManager->hasDefinition($info['type'])) {
+            $this->getCckPlugin($info['type'])
+              ->processCckFieldValues($migration, $field, $info);
+          }
+          else {
+            $migration->setProcessOfProperty($field, $field);
+          }
+        }
+      }
+
+      $migrations[] = $migration;
+    }
+
+    return $migrations;
+  }
+
+}

@@ -28,6 +28,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
  *     "list_builder" = "Drupal\datatank\Entity\Controller\DatasetListBuilder",
  *     "form" = {
  *       "add" = "Drupal\datatank\Form\DatasetForm",
+ *       "default" = "Drupal\datatank\Form\DatasetForm",
  *       "edit" = "Drupal\datatank\Form\DatasetForm",
  *       "delete" = "Drupal\datatank\Form\DatasetDeleteForm",
  *     },
@@ -36,6 +37,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
  *   base_table = "datatank_dataset",
  *   admin_permission = "administer datatank_Dataset entity",
  *   fieldable = FALSE,
+ *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "did",
  *     "label" = "name",
@@ -191,7 +193,15 @@ class Dataset extends ContentEntityBase implements DatasetInterface {
 
     $fields['langcode'] = BaseFieldDefinition::create('language')
       ->setLabel(t('Language code'))
-      ->setDescription(t('The language code of Column entity.'));
+      ->setDescription(t('The language code of Column entity.'))
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', array(
+        'type' => 'hidden',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'language_select',
+        'weight' => 2,
+      ));
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))

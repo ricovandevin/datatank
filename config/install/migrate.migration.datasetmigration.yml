@@ -2,6 +2,8 @@
 id: datatank_migrate_dataset
 label: Migrate the datasets
 migration_group: datatank
+builder:
+  plugin: dataset
 source:
   plugin: DatasetMigration
 destination:
@@ -16,3 +18,16 @@ process:
     plugin: migration
     migration: datatank_migrate_column
     source: columns
+  field_dataset_category: category
+  field_dataset_dataset_type: type
+  field_dataset_keyword: keyword
+  field_dataset_license: licence
+  field_dataset_target_group: target_group
+  field_dataset_type: type
+
+
+  #https://api.drupal.org/api/drupal/core%21modules%21block%21src%21Plugin%21migrate%21process%21BlockPluginId.php/class/BlockPluginId/8
+migration_dependencies:
+  required:
+    - datatank_migrate_column
+    - datatank_migrate_parameter

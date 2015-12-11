@@ -22,6 +22,10 @@ class DatasetListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildHeader() {
+    $message = \Drupal::config('migrate.migration.datasetmigration')
+      ->get('destination');
+    dpm($message);
+
     $header['id'] = $this->t('ID');
     $header['column_name'] = $this->t('Name');
     $header['parameters'] = $this->t('Number of parameters');

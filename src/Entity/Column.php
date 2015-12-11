@@ -27,6 +27,7 @@ use Drupal\user\UserInterface;
  *     "list_builder" = "Drupal\datatank\Entity\Controller\ColumnListBuilder",
  *     "form" = {
  *       "add" = "Drupal\datatank\Form\ColumnForm",
+ *       "default" = "Drupal\datatank\Form\ColumnForm",
  *       "edit" = "Drupal\datatank\Form\ColumnForm",
  *       "delete" = "Drupal\datatank\Form\ColumnDeleteForm",
  *     },
@@ -35,6 +36,7 @@ use Drupal\user\UserInterface;
  *   base_table = "datatank_column",
  *   admin_permission = "administer datatank_column entity",
  *   fieldable = FALSE,
+ *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "cid",
  *     "label" = "name",
@@ -130,6 +132,7 @@ class Column extends ContentEntityBase implements ColumnInterface {
         'type' => 'string',
         'weight' => -5,
       ))
+      ->setTranslatable(TRUE)
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -159,7 +162,15 @@ class Column extends ContentEntityBase implements ColumnInterface {
 
     $fields['langcode'] = BaseFieldDefinition::create('language')
       ->setLabel(t('Language code'))
-      ->setDescription(t('The language code of Column entity.'));
+      ->setDescription(t('The language code of Column entity.'))
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', array(
+        'type' => 'hidden',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'language_select',
+        'weight' => 2,
+      ));
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))

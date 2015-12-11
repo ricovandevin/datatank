@@ -26,7 +26,11 @@ class ColumnMigration extends SourcePluginBase {
     $datasets = $consumer->getDatasets();
     $columns = [];
     foreach ($datasets as $dataset) {
-      $columns = array_merge($dataset->getColumnsArray(), $columns);
+      //$columns = array_merge($dataset->getColumnsArray(), $columns);
+      foreach ($dataset->getColumnsArray() as $key => $column) {
+        // There are capitalized columns in the datatank api.
+        $columns[strtolower($key)] = $column;
+      }
     }
     return new \ArrayIterator($columns);
   }
@@ -36,13 +40,20 @@ class ColumnMigration extends SourcePluginBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+
+    /*$row->setSourceProperty('documentation', [
+      'ik ben documentatie EN',
+      'ik ben documentatie NL'
+    ]);*/
+
+
     return parent::prepareRow($row);
   }
 
   /**
    * Returns available fields on the source.
    *
-   * @return array
+   * @return array$row->setSourceProperty('langcode', ['en', 'nl']);
    *   Available fields in the source, keys are the field machine names as used
    *   in field mappings, values are descriptions.
    */

@@ -9,6 +9,8 @@ use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\tdt_client\Consumer;
 use Drupal\tdt_client\Config\DrupalConfig;
 use Drupal\migrate\Row;
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * @MigrateSource(
@@ -18,6 +20,10 @@ use Drupal\migrate\Row;
 class DatasetMigration extends SourcePluginBase {
 
   protected $ids;
+
+  /*public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }*/
 
   public function initializeIterator() {
     $config = new DrupalConfig();
@@ -35,6 +41,19 @@ class DatasetMigration extends SourcePluginBase {
     $source = $row->getSource();
     $row->setSourceProperty('parameters', array_keys($source['dataset']->getParameters()));
     $row->setSourceProperty('columns', array_keys($source['dataset']->getColumns()));
+
+    $fields = $source['dataset']->getFields();
+
+    /*$vocabulary = Vocabulary::load('field_dataset_category');
+    $term = Term::create([
+      'name' => 'Lama',
+      'vid' => $vocabulary->id()
+    ]);
+    $term->save();*/
+
+
+    $row->setSourceProperty('category', 1);
+    $row->setSourceProperty('type', 'hallowa');
 
     return parent::prepareRow($row);
   }
