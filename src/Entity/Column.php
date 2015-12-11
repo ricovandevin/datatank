@@ -125,11 +125,11 @@ class Column extends ContentEntityBase implements ColumnInterface {
       ))
       ->setDisplayOptions('view', array(
         'label' => 'above',
-        'type' => 'string',
+        'type' => 'string_textfield',
         'weight' => -5,
       ))
       ->setDisplayOptions('form', array(
-        'type' => 'string',
+        'type' => 'string_textfield',
         'weight' => -5,
       ))
       ->setTranslatable(TRUE)
@@ -168,8 +168,7 @@ class Column extends ContentEntityBase implements ColumnInterface {
         'type' => 'hidden',
       ))
       ->setDisplayOptions('form', array(
-        'type' => 'language_select',
-        'weight' => 2,
+        'type' => 'hidden',
       ));
 
     $fields['created'] = BaseFieldDefinition::create('created')

@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\datatank\Plugin\migrate\builder\Dataset.
+ * Contains \Drupal\datatank_migrate\Plugin\migrate\builder\Dataset.
  */
 
-namespace Drupal\datatank\Plugin\migrate\builder;
+namespace Drupal\datatank_migrate\Plugin\migrate\builder;
 
 use Drupal\migrate\Entity\Migration;
 use Drupal\migrate\Exception\RequirementsException;

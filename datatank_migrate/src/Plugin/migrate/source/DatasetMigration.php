@@ -1,16 +1,14 @@
 <?php
 /**
  * @file
- * Contains \Drupal\datatank\Plugin\migrate\source
+ * Contains \Drupal\datatank_migrate\Plugin\migrate\source
  */
-namespace Drupal\datatank\Plugin\migrate\source;
+namespace Drupal\datatank_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\tdt_client\Consumer;
 use Drupal\tdt_client\Config\DrupalConfig;
 use Drupal\migrate\Row;
-use Drupal\taxonomy\Entity\Vocabulary;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * @MigrateSource(
@@ -44,16 +42,9 @@ class DatasetMigration extends SourcePluginBase {
 
     $fields = $source['dataset']->getFields();
 
-    /*$vocabulary = Vocabulary::load('field_dataset_category');
-    $term = Term::create([
-      'name' => 'Lama',
-      'vid' => $vocabulary->id()
-    ]);
-    $term->save();*/
+    $category = datatank_migrate_create_term('field_dataset_category', $fields['category']->getValue());
 
-
-    $row->setSourceProperty('category', 1);
-    $row->setSourceProperty('type', 'hallowa');
+    $row->setSourceProperty('category', $category);
 
     return parent::prepareRow($row);
   }
@@ -68,6 +59,7 @@ class DatasetMigration extends SourcePluginBase {
   public function fields() {
     return [
       'dataset_name' => t('Dataset name'),
+      'type' => 'jaja'
     ];
   }
 

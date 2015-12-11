@@ -1,9 +1,9 @@
 <?php
 /**
  * @file
- * Contains \Drupal\datatank\Plugin\migrate\source
+ * Contains \Drupal\datatank_migrate\Plugin\migrate\source
  */
-namespace Drupal\datatank\Plugin\migrate\source;
+namespace Drupal\datatank_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\tdt_client\Consumer;

@@ -10,7 +10,3 @@ core: 8.x
 dependencies:
   - entity_reference
   - taxonomy
-  - migrate
-  - migrate_plus
-  - migrate_tools
-  - content_translation

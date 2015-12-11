@@ -199,8 +199,7 @@ class Dataset extends ContentEntityBase implements DatasetInterface {
         'type' => 'hidden',
       ))
       ->setDisplayOptions('form', array(
-        'type' => 'language_select',
-        'weight' => 2,
+        'type' => 'hidden',
       ));
 
     $fields['created'] = BaseFieldDefinition::create('created')

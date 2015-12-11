@@ -1,0 +1,12 @@
+name: datatank_migrate
+type: module
+description: Datatank migrate
+core: 8.x
+package: datatank
+
+dependencies:
+  - entity_reference
+  - taxonomy
+  - migrate
+  - migrate_plus
+  - migrate_tools

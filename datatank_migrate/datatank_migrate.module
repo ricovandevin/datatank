@@ -1,0 +1,30 @@
+<?php
+
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\Entity\Vocabulary;
+
+/**
+ * @file
+ * Contains datatank_migrate.module..
+ */
+
+function datatank_migrate_create_term($vid, $name) {
+  $query = \Drupal::entityQuery('taxonomy_term')
+    ->condition('name', $name)
+    ->condition('vid', $vid);
+
+  $nids = $query->execute();
+  if (!empty($nids)) {
+    return array_values($nids)[0];;
+  }
+  else {
+    $vocabulary = Vocabulary::load($vid);
+    $term = Term::create([
+      'name' => $name,
+      'vid' => $vocabulary->id()
+    ]);
+    $term->save();
+    return $term->id();
+  }
+
+}
