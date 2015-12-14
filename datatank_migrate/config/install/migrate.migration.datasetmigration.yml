@@ -11,7 +11,7 @@ destination:
 process:
   name: dataset_name
   field_dataset_category: category
-  field_dataset_dataset_type: dataset_type
+  field_dataset_type: dataset_type
   field_dataset_keyword: keyword
   field_dataset_license: license
   field_dataset_target_group: target_group
