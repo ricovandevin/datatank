@@ -42,9 +42,28 @@ class DatasetMigration extends SourcePluginBase {
 
     $fields = $source['dataset']->getFields();
 
-    $category = datatank_migrate_create_term('field_dataset_category', $fields['category']->getValue());
+    $tax_fields = [
+      'field_dataset_category' => 'category',
+      'field_dataset_dataset_type' => 'dataset_type',
+      'field_dataset_keyword' => 'keyword',
+      'field_dataset_license' => 'license',
+      'field_dataset_target_group' => 'target_group',
+      'field_dataset_type' => 'type',
+    ];
 
-    $row->setSourceProperty('category', $category);
+    foreach ($tax_fields as $field_name => $dest) {
+      $raw_values = explode(',', trim($fields[$dest]->getValue()));
+      if (!empty($raw_values)) {
+        $terms = [];
+        foreach ($raw_values as $val) {
+          if ($val) {
+            $terms[] = datatank_migrate_create_term($field_name, trim($val));
+          }
+        }
+        $row->setSourceProperty($dest, $terms);
+      }
+
+    }
 
     return parent::prepareRow($row);
   }
@@ -59,7 +78,6 @@ class DatasetMigration extends SourcePluginBase {
   public function fields() {
     return [
       'dataset_name' => t('Dataset name'),
-      'type' => 'jaja'
     ];
   }
 
