@@ -44,11 +44,10 @@ class DatasetMigration extends SourcePluginBase {
 
     $tax_fields = [
       'field_dataset_category' => 'category',
-      'field_dataset_dataset_type' => 'dataset_type',
+      'field_dataset_type' => 'dataset_type',
       'field_dataset_keyword' => 'keyword',
       'field_dataset_license' => 'license',
       'field_dataset_target_group' => 'target_group',
-      'field_dataset_type' => 'type',
     ];
 
     foreach ($tax_fields as $field_name => $dest) {
