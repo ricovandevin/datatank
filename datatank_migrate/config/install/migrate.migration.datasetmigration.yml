@@ -15,6 +15,7 @@ process:
   field_dataset_keyword: keyword
   field_dataset_license: license
   field_dataset_target_group: target_group
+  field_dataset_userdocumentation : userdocumentation_nl
   parameter_pid:
     plugin: migration
     migration: datatank_migrate_parameter

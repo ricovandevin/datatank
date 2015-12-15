@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - datatank
+id: datatank_dataset.teaser
+label: Teaser
+targetEntityType: datatank_dataset
+cache: true

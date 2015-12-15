@@ -144,3 +144,11 @@ datatank.dataset_settings:
     _title: 'Dataset Settings'
   requirements:
     _permission: 'administer datatank_dataset entity'
+
+#DatasetSearchBuilder.content:
+#  path: '/search'
+#  defaults:
+#    _controller: '\Drupal\datatank\Controller\DatasetSearchBuilder::content'
+#    _title_callback: '\Drupal\datatank\Controller\DatasetSearchBuilder::title'
+#  requirements:
+#    _permission: 'access content'

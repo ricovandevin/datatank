@@ -33,6 +33,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
  *       "delete" = "Drupal\datatank\Form\DatasetDeleteForm",
  *     },
  *     "access" = "Drupal\datatank\DatasetAccessControlHandler",
+ *     "views_data" = "Drupal\datatank\Entity\DatasetViewsData",
  *   },
  *   base_table = "datatank_dataset",
  *   admin_permission = "administer datatank_Dataset entity",

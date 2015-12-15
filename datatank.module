@@ -9,6 +9,7 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Field;
 
 /**
  * Helper function to create textfield
@@ -93,4 +94,30 @@ function datatank_helper_create_taxonomyfield($entity_type, $bundle, $field_name
     ->setComponent($field_name, [])
     ->save();
 
+}
+
+/**
+ * Helper function to get availible entries of this field for entity datatank_datataset
+ */
+function datatank_helper_get_entries_of_field($field_name) {
+  $query = \Drupal::entityQuery('datatank_dataset');
+
+  $nids = $query->execute();
+  if (!empty($nids)) {
+    return array_values($nids)[0];;
+  }
+
+}
+
+/**
+ * Helper function to get all the availible taxonomy fields (@deprecated, should be variable)
+ */
+function datatank_helper_get_tax_fields() {
+  return [
+    'field_dataset_category' => 'category',
+    'field_dataset_type' => 'dataset_type',
+    'field_dataset_keyword' => 'keyword',
+    'field_dataset_license' => 'license',
+    'field_dataset_target_group' => 'target_group',
+  ];
 }

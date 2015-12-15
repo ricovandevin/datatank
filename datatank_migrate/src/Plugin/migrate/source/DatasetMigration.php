@@ -42,16 +42,11 @@ class DatasetMigration extends SourcePluginBase {
 
     $fields = $source['dataset']->getFields();
 
-    $tax_fields = [
-      'field_dataset_category' => 'category',
-      'field_dataset_type' => 'dataset_type',
-      'field_dataset_keyword' => 'keyword',
-      'field_dataset_license' => 'license',
-      'field_dataset_target_group' => 'target_group',
-    ];
+    $tax_fields = datatank_helper_get_tax_fields();
 
     foreach ($tax_fields as $field_name => $dest) {
       $raw_values = explode(',', trim($fields[$dest]->getValue()));
+
       if (!empty($raw_values)) {
         $terms = [];
         foreach ($raw_values as $val) {
@@ -61,8 +56,9 @@ class DatasetMigration extends SourcePluginBase {
         }
         $row->setSourceProperty($dest, $terms);
       }
-
     }
+
+    $row->setSourceProperty('userdocumentation_nl', trim($fields['userdocumentation_nl']->getValue()));
 
     return parent::prepareRow($row);
   }
