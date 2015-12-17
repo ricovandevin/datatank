@@ -56,7 +56,7 @@ class TaxonomyText extends StringFilter {
       'left_field' => $this->realField . '_target_id',
       'operator' => '='
     ];
-    dsm($configuration);
+
     $join = Views::pluginManager('join')
       ->createInstance('standard', $configuration);
     $this->query->addRelationship('term_data', $join, $this->realField . '_target_id');

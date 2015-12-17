@@ -10,6 +10,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Field;
+use Drupal\Component\Utility\Html;
 
 /**
  * Helper function to create textfield
@@ -119,5 +120,61 @@ function datatank_helper_get_tax_fields() {
     'field_dataset_keyword' => 'keyword',
     'field_dataset_license' => 'license',
     'field_dataset_target_group' => 'target_group',
+    'field_dataset_publisher_name' => 'publisher_name',
+    'field_dataset_language' => 'language'
   ];
+}
+
+/**
+ * Implements hook_block_build_alter().
+ * @param array $build
+ * @param \Drupal\Core\Block\BlockPluginInterface $block
+ */
+function datatank_block_build_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+  if ($block->getMachineNameSuggestion() == 'exposedformsearchpage_1') {
+    $build['#cache'] = array(
+      'max-age' => 0,
+    );
+  }
+}
+
+/**
+ * Hook theme suggestions hook
+ * @param array $variables
+ * @return array
+ */
+/*function hook_theme_suggestions_HOOK(array $variables) {
+  $suggestions = array();
+
+  $suggestions[] = 'node__' . $variables['elements']['#langcode'];
+
+  return $suggestions;
+}*/
+
+
+/**
+ * Implements hook_theme().
+ */
+function datatank_theme() {
+  return array(
+    'datatank_dataset' => array(
+      'render element' => 'elements',
+    ),
+  );
+}
+
+/**
+ * Hook_preprocess_template().
+ * @param $variables
+ */
+function datatank_preprocess_datatank_dataset(&$variables) {
+  $variables['content'] = $variables['elements'];
+}
+
+/**
+ * Implements hook_theme_suggestions_datatank_dataset().
+ */
+function datatank_theme_suggestions_datatank_dataset($variables) {
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+  return 'datatank_dataset__' . $sanitized_view_mode;
 }

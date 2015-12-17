@@ -16,6 +16,11 @@ process:
   field_dataset_license: license
   field_dataset_target_group: target_group
   field_dataset_userdocumentation : userdocumentation_nl
+  field_dataset_title: title_nl
+  field_dataset_publisher_name:  publisher_name
+  field_dataset_language: language
+  created: issued
+  changed: modified
   parameter_pid:
     plugin: migration
     migration: datatank_migrate_parameter

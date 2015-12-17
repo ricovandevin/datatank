@@ -59,6 +59,10 @@ class DatasetMigration extends SourcePluginBase {
     }
 
     $row->setSourceProperty('userdocumentation_nl', trim($fields['userdocumentation_nl']->getValue()));
+    $row->setSourceProperty('title_nl', trim($fields['title_nl']->getValue()));
+
+    $row->setSourceProperty('issued', strtotime($fields['issued']->getValue()));
+    $row->setSourceProperty('modified', strtotime($fields['modified']->getValue()));
 
     return parent::prepareRow($row);
   }
