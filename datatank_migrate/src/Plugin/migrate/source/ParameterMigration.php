@@ -26,7 +26,11 @@ class ParameterMigration extends SourcePluginBase {
     $datasets = $consumer->getDatasets();
     $parameters = [];
     foreach ($datasets as $dataset) {
-      $parameters = array_merge($dataset->getParameterArray(), $parameters);
+      foreach ($dataset->getParameterArray() as $key => $parameter) {
+        if (!isset($parameters[strtolower($key)]) || $parameters[strtolower($key)]['default_value'] == '') {
+          $parameters[strtolower($key)] = $parameter;
+        }
+      }
     }
     return new \ArrayIterator($parameters);
   }
@@ -36,6 +40,8 @@ class ParameterMigration extends SourcePluginBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    //$row->setSourceProperty('default_value', $source->getProperty('default_value'));
+
     return parent::prepareRow($row);
   }
 
@@ -50,7 +56,8 @@ class ParameterMigration extends SourcePluginBase {
     return [
       'param_name' => t('Parameter unique name'),
       'required' => t('Required field'),
-      'documentation' => t('Documentation')
+      'documentation' => t('Documentation'),
+      'default_value' => t('Default value')
     ];
   }
 

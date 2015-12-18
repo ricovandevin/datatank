@@ -137,6 +137,29 @@ class Parameter extends ContentEntityBase implements ParameterInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
+
+    // Default value.
+    $fields['default_value'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Default value'))
+      ->setDescription(t('The default value of the Parameter entity.'))
+      ->setTranslatable(TRUE)
+      ->setSettings(array(
+        'default_value' => '',
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string_textfield',
+        'weight' => -5,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -5,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
     // Owner field of the contact.
     $fields['user_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Username'))

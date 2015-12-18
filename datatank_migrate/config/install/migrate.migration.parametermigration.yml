@@ -10,3 +10,4 @@ process:
   name: param_name
   documentation: documentation
   required: required
+  default_value: default_value

@@ -11,6 +11,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Field;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Url;
 
 /**
  * Helper function to create textfield
@@ -168,7 +169,19 @@ function datatank_theme() {
  * @param $variables
  */
 function datatank_preprocess_datatank_dataset(&$variables) {
+  //dsm(array_keys($variables['elements']));
+  // INFO
   $variables['content'] = $variables['elements'];
+  $variables['date'] = drupal_render($variables['elements']['created']);
+  $variables['formats'] = 'JSON | XML | CSV | PHP';
+
+  $raw_url = 'http://opendata.visitflanders.org/' . $variables['elements']['#datatank_dataset']->getName();
+  $url = Url::fromUri($raw_url);
+  $external_link = \Drupal::l($raw_url, $url);
+  $variables['url'] = $external_link;
+
+  // VELDEN
+
 }
 
 /**

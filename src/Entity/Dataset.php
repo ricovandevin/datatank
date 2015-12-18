@@ -302,6 +302,14 @@ class Dataset extends ContentEntityBase implements DatasetInterface {
     $this->set('user_id', $account->id());
     return $this;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getName() {
+    return $this->get('name')->value;
+  }
+
 }
 
 ?>
