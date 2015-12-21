@@ -169,7 +169,6 @@ function datatank_theme() {
  * @param $variables
  */
 function datatank_preprocess_datatank_dataset(&$variables) {
-  //dsm(array_keys($variables['elements']));
   // INFO
   $variables['content'] = $variables['elements'];
   $variables['date'] = drupal_render($variables['elements']['created']);
@@ -180,7 +179,6 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   $external_link = \Drupal::l($raw_url, $url);
   $variables['url'] = $external_link;
 
-  // VELDEN
 
 }
 
