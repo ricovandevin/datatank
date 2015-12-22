@@ -12,6 +12,8 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Field;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
+use Drupal\tdt_client\Client;
+use Drupal\tdt_client\Config\DrupalConfig;
 
 /**
  * Helper function to create textfield
@@ -169,17 +171,38 @@ function datatank_theme() {
  * @param $variables
  */
 function datatank_preprocess_datatank_dataset(&$variables) {
+  $config = new DrupalConfig();
+  $client = new Client($config);
+
+  $dataset = $variables['elements']['#datatank_dataset'];
+
   // INFO
   $variables['content'] = $variables['elements'];
   $variables['date'] = drupal_render($variables['elements']['created']);
   $variables['formats'] = 'JSON | XML | CSV | PHP';
 
-  $raw_url = 'http://opendata.visitflanders.org/' . $variables['elements']['#datatank_dataset']->getName();
-  $url = Url::fromUri($raw_url);
-  $external_link = \Drupal::l($raw_url, $url);
+  $url = Url::fromUri($config->getEndpoint() . $dataset->getName());
+  $external_link = \Drupal::l($url, $url);
   $variables['url'] = $external_link;
 
+  // For the demo url let's use the first 2 parameters
+  $query = [];
+  for ($i = 0; $i < 2; $i++) {
+    if ($pid = $dataset->get('parameter_pid')[$i]->target_id) {
+      $parameter = entity_load('datatank_parameter', $pid);
+      if ($parameter) {
+        $query[$parameter->get('name')->value] = isset($parameter->get('default_value')->value) ? $parameter->get('default_value')->value : 0;
+      }
+    }
+  }
 
+  $query['limit'] = 1;
+  $parameter_url = Url::fromUri($config->getEndpoint() . $dataset->getName() . '.json', ['query' => $query]);
+  $variables['parameter_url'] = $parameter_url->toString();
+
+  // Example result
+  $result = $client->get($variables['parameter_url']);
+  $variables['parameter_example'] = $result;
 }
 
 /**
