@@ -30,7 +30,6 @@ class DatasetAccessControlHandler extends EntityAccessControlHandler {
    */
   public function access(EntityInterface $entity, $operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
     $account = $this->prepareUser($account);
-
     if ($operation === 'view') {
       return AccessResult::allowed();
     }

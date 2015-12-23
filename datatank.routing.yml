@@ -105,6 +105,15 @@ entity.datatank_dataset.canonical:
   requirements:
     _entity_access: 'datatank_dataset.view'
 
+entity.datatank_dataset.download:
+  path: '/datatank/dataset/{datatank_dataset}/download'
+  defaults:
+    _form: '\Drupal\datatank\Form\DatasetDownload'
+    _entity_view: 'datatank_dataset'
+    _title: 'Dataset download'
+  requirements:
+    _entity_access: 'datatank_dataset.view'
+
 entity.datatank_dataset.collection:
   path: '/admin/content/datatank/dataset/list'
   defaults:

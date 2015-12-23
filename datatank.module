@@ -142,20 +142,6 @@ function datatank_block_build_alter(array &$build, \Drupal\Core\Block\BlockPlugi
 }
 
 /**
- * Hook theme suggestions hook
- * @param array $variables
- * @return array
- */
-/*function hook_theme_suggestions_HOOK(array $variables) {
-  $suggestions = array();
-
-  $suggestions[] = 'node__' . $variables['elements']['#langcode'];
-
-  return $suggestions;
-}*/
-
-
-/**
  * Implements hook_theme().
  */
 function datatank_theme() {
@@ -179,7 +165,13 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   // INFO
   $variables['content'] = $variables['elements'];
   $variables['date'] = drupal_render($variables['elements']['created']);
-  $variables['formats'] = 'JSON | XML | CSV | PHP';
+
+  $formats = datatank_available_formats();
+  $format_labels = [];
+  foreach ($formats as $format) {
+    $format_labels[] = $format['label'];
+  }
+  $variables['formats'] = implode(' | ', $format_labels);
 
   $url = Url::fromUri($config->getEndpoint() . $dataset->getName());
   $external_link = \Drupal::l($url, $url);
@@ -203,6 +195,9 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   // Example result
   $result = $client->get($variables['parameter_url']);
   $variables['parameter_example'] = $result;
+
+  $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
+  $variables['downloadtab'] = \Drupal::l(t('Download'), $url);
 }
 
 /**
@@ -211,4 +206,50 @@ function datatank_preprocess_datatank_dataset(&$variables) {
 function datatank_theme_suggestions_datatank_dataset($variables) {
   $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
   return 'datatank_dataset__' . $sanitized_view_mode;
+}
+
+/**
+ * returns the availible formats in datatank api.
+ */
+function datatank_available_formats() {
+  $formats = [
+    'json' => [
+      'label' => 'JSON',
+      'extensie' => '.json',
+    ],
+    'XML' => [
+      'label' => 'XML',
+      'extensie' => '.xml',
+    ],
+    'CSV' => [
+      'label' => 'CSV',
+      'extensie' => '.csv',
+    ],
+    'PHP' => [
+      'label' => 'PHP',
+      'extensie' => '.php',
+    ],
+  ];
+
+  return $formats;
+}
+
+/**
+ * Get available languages from api
+ */
+function datatank_available_languages() {
+  return [
+    'NL' => t('NL'),
+    'FR' => t('FR'),
+    'EN' => t('EN'),
+    'DE' => t('DE'),
+    'SP' => t('SP'),
+    'IT' => t('IT'),
+    'PT' => t('PT'),
+    'RU' => t('RU'),
+    'JP' => t('JP'),
+    'ZH' => t('ZH'),
+    'DA' => t('DA'),
+    'SE' => t('SE')
+  ];
 }
