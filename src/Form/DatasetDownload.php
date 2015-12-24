@@ -217,7 +217,9 @@ class DatasetDownload extends FormBase {
 
     $formats = datatank_available_formats();
     foreach ($formats as $key => $format) {
-      $url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extensie'], ['query' => $query]);
+      $data_url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extensie'], ['query' => $query]);
+      $url = Url::fromRoute('datatank.dataset_download_confirm_index', [], ['query' => ['download_url' => $data_url->toString()]]);
+
       $form['result']['download'][$key] = [
         '#markup' => '<div>' . \Drupal::l($format['label'], $url) . '</div>'
       ];

@@ -114,6 +114,22 @@ entity.datatank_dataset.download:
   requirements:
     _entity_access: 'datatank_dataset.view'
 
+datatank.dataset_download_confirm_index:
+  path: '/datatank/dataset/download/confirm'
+  defaults:
+    _controller: '\Drupal\datatank\Controller\DatasetDownloadConfirm::index'
+    _title: 'Confirm download'
+  requirements:
+    _permission: 'view datatank_dataset entity'
+
+datatank.dataset_download_confirm_dowload:
+  path: '/datatank/dataset/download/confirm/data'
+  defaults:
+    _controller: '\Drupal\datatank\Controller\DatasetDownloadConfirm::download'
+    _title: 'Confirm download'
+  requirements:
+    _permission: 'view datatank_dataset entity'
+
 entity.datatank_dataset.collection:
   path: '/admin/content/datatank/dataset/list'
   defaults:
