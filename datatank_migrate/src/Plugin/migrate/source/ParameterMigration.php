@@ -40,8 +40,6 @@ class ParameterMigration extends SourcePluginBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    //$row->setSourceProperty('default_value', $source->getProperty('default_value'));
-
     return parent::prepareRow($row);
   }
 
@@ -56,7 +54,9 @@ class ParameterMigration extends SourcePluginBase {
     return [
       'param_name' => t('Parameter unique name'),
       'required' => t('Required field'),
-      'documentation' => t('Documentation'),
+      'description' => t('Documentation'),
+      'description_nl' => t('DocumentationNL'),
+      'description_en' => t('Documentation EN'),
       'default_value' => t('Default value')
     ];
   }

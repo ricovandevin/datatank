@@ -116,22 +116,17 @@ class Parameter extends ContentEntityBase implements ParameterInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     // Description field for the column.
-    $fields['documentation'] = BaseFieldDefinition::create('string')
+    $fields['documentation'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Description'))
       ->setDescription(t('The description of the Parameter entity.'))
       ->setTranslatable(TRUE)
-      ->setSettings(array(
-        'default_value' => '',
-        'max_length' => 255,
-        'text_processing' => 0,
-      ))
       ->setDisplayOptions('view', array(
         'label' => 'above',
-        'type' => 'string_textfield',
+        'type' => 'text_textarea_with_summary',
         'weight' => -5,
       ))
       ->setDisplayOptions('form', array(
-        'type' => 'string_textfield',
+        'type' => 'text_textarea_with_summary',
         'weight' => -5,
       ))
       ->setDisplayConfigurable('form', TRUE)

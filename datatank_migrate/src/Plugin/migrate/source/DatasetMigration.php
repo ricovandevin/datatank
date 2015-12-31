@@ -19,15 +19,12 @@ class DatasetMigration extends SourcePluginBase {
 
   protected $ids;
 
-  /*public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-  }*/
-
   public function initializeIterator() {
     $config = new DrupalConfig();
     $consumer = new Consumer($config);
 
     $datasets = $consumer->getDatasetsArray();
+
     return new \ArrayIterator($datasets);
   }
 
@@ -58,8 +55,8 @@ class DatasetMigration extends SourcePluginBase {
       }
     }
 
-    $row->setSourceProperty('userdocumentation_nl', trim($fields['userdocumentation_nl']->getValue()));
-    $row->setSourceProperty('title_nl', trim($fields['title_nl']->getValue()));
+    $row->setSourceProperty('documentation', trim($fields['userdocumentation_en']->getValue()));
+    $row->setSourceProperty('title', trim($fields['title_en']->getValue()));
 
     $row->setSourceProperty('issued', strtotime($fields['issued']->getValue()));
     $row->setSourceProperty('modified', strtotime($fields['modified']->getValue()));
