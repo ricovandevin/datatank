@@ -1,0 +1,5 @@
+datatank.site_information_settings:
+  title: 'Datatank information'
+  base_route_name: datatank.datatank_configuration_form
+  names:
+    - datatank.settings

@@ -177,3 +177,14 @@ datatank.dataset_settings:
 #    _title_callback: '\Drupal\datatank\Controller\DatasetSearchBuilder::title'
 #  requirements:
 #    _permission: 'access content'
+
+datatank.datatank_configuration_form:
+  path: '/admin/config/datatank/datatankconfiguration'
+  defaults:
+    _form: '\Drupal\datatank\Form\DatatankConfigurationForm'
+    _title: 'DatatankConfigurationForm'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+

@@ -100,6 +100,15 @@ class DatasetDownload extends FormBase {
       ),
     ];
 
+    $config = \Drupal::configFactory()->getEditable('datatank.settings');
+    $url = Url::fromUserInput($config->get('datatank_link_lambert72'));
+    $external_link = \Drupal::l('?', $url);
+
+    $form['filter']['coor']['info'] = [
+      '#type' => 'markup',
+      '#markup' => t('1) Lambert 72 coordinates') . $external_link,
+    ];
+
     $form['filter']['coor']['x_coord'] = [
       '#type' => 'textfield',
       '#title' => $this->t('X='),
@@ -110,6 +119,10 @@ class DatasetDownload extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Y='),
       '#placeholder' => t('Ex: 188600'),
+    ];
+
+    $form['filter']['coor']['radiusinfo'] = [
+      '#markup' => t('2) Radius in meters'),
     ];
 
     $form['filter']['coor']['radius'] = [
