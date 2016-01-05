@@ -72,7 +72,7 @@ class DatasetDownload extends FormBase {
       ),
     ];
 
-    $postal_codes_raw = array_map('str_getcsv', file(drupal_get_path("module", 'datatank') . '/zipcodes2.csv'));
+    $postal_codes_raw = array_map('str_getcsv', file(\Drupal::root() . '/' . drupal_get_path("module", 'datatank') . '/zipcodes2.csv'));
     $postal_codes = [];
 
     foreach ($postal_codes_raw as $postal_code_raw) {
