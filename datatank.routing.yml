@@ -98,12 +98,12 @@ datatank.parameter_settings:
 
 #Databank Dataset
 entity.datatank_dataset.canonical:
-  path: '/datatank/dataset/{datatank_dataset}'
+  path: '/datasets/{datatank_dataset}'
   defaults:
     _entity_view: 'datatank_dataset'
-    _title: 'Dataset'
+    _title_callback: '\Drupal\datatank\Controller\DatasetController::title'
   requirements:
-    _entity_access: 'datatank_dataset.view'
+    _permission: 'view datatank_dataset entity'
 
 entity.datatank_dataset.download:
   path: '/datatank/dataset/{datatank_dataset}/download'
@@ -136,7 +136,7 @@ entity.datatank_dataset.collection:
     _entity_list: 'datatank_dataset'
     _title: 'Datatank: dataset'
   requirements:
-    _permission: 'view datatank_dataset entity'
+    _permission: 'administer datatank_dataset entity'
 
 datatank.dataset_add:
   path: '/admin/content/datatank/dataset/add'
