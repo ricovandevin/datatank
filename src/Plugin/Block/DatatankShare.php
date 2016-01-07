@@ -44,9 +44,15 @@ class DatatankShare extends BlockBase {
     $facebook_url = Url::fromUri("http://www.facebook.com/sharer.php??u=" . $current_url->toString() . "&t=" . $title);
     $facebook_url->setOption('attributes', array('target' => '_blank'));
 
+    $node = \Drupal::request()->attributes->get('node');
+    $settings = \Drupal::config('forward.settings')->get();
+
     $build = [];
     $build['twitter']['#markup'] = \Drupal::l(t('Share on twitter'), $twitter_url);
     $build['facebook']['#markup'] = \Drupal::l(t('Share on facebook'), $facebook_url);
+    $build['mail'] = \Drupal::service('forward.link_builder')
+      ->buildForwardEntityLink($node, $settings);
+
 
     $build['#cache'] = array(
       //'contexts' => array('url'),
