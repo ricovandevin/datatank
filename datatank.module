@@ -197,7 +197,7 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   $variables['parameter_example'] = $result;
 
   $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
-  $variables['downloadtab'] = \Drupal::l(t('Download'), $url);
+  $variables['downloadtab'] = $url;
 }
 
 /**
