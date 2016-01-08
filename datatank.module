@@ -253,3 +253,13 @@ function datatank_available_languages() {
     'SE' => t('SE')
   ];
 }
+
+/**
+ * Implements hook_node_insert.
+ * @param $node
+ */
+function datatank_node_insert($node) {
+  if ($node->bundle() == 'app') {
+    drupal_set_message(t('Thanks for submitting your app, this will go in review.'));
+  }
+}
