@@ -45,6 +45,14 @@ class DatatankConfigurationForm extends ConfigFormBase {
       '#size' => 64,
       '#default_value' => $config->get('datatank_link_lambert72'),
     );
+
+    $form['datatank_link_info_filters'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Link to info filters info page'),
+      '#maxlength' => 64,
+      '#size' => 64,
+      '#default_value' => $config->get('datatank_link_info_filters'),
+    );
     return parent::buildForm($form, $form_state);
   }
 
@@ -63,6 +71,10 @@ class DatatankConfigurationForm extends ConfigFormBase {
 
     \Drupal::configFactory()->getEditable('datatank.settings')
       ->set('datatank_link_lambert72', $form_state->getValue('datatank_link_lambert72'))
+      ->save();
+
+    \Drupal::configFactory()->getEditable('datatank.settings')
+      ->set('datatank_link_info_filters', $form_state->getValue('datatank_link_info_filters'))
       ->save();
   }
 

@@ -44,5 +44,3 @@ class DatasetForm extends ContentEntityForm {
     $entity->save();
   }
 }
-
-?>

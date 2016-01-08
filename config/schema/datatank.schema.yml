@@ -4,6 +4,9 @@ datatank.settings:
    datatank_link_lambert72:
      type: label
      label: "link to lambert72 page"
+   datatank_link_info_filters:
+     type: label
+     label: "link to info filters page"
    default_langcode:
      type: string
      label: 'Site default language code'

@@ -1,4 +1,5 @@
 enabled_dataset_fields: hierkomteenarray
-datatank_link_lambert72: ''
+datatank_link_lambert72: '/node/5'
+datatank_link_info_filters: '/node/5'
 langcode: en
 default_langcode: en
