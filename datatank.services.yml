@@ -1,0 +1,5 @@
+services:
+  datatank.route_subscriber:
+    class: Drupal\datatank\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
