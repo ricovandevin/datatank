@@ -157,40 +157,54 @@ function datatank_theme() {
  * @param $variables
  */
 function datatank_preprocess_datatank_dataset(&$variables) {
+  // INFO
+  $variables['content'] = $variables['elements'];
+  $variables['date'] = drupal_render($variables['elements']['created']);
+  $dataset = $variables['elements']['#datatank_dataset'];
+
+  // DATE
+  $formats = datatank_available_formats();
+  $format_labels = [];
+  foreach ($formats as $format) {
+    $format_labels[] = $format['label'];
+  }
+  $variables['formats'] = implode(' | ', $format_labels);
+
+  // For the demo url let's use the first 2 parameters
+  $query = [];
+  for ($i = 0; $i < 2; $i++) {
+    if ($pid = $dataset->get('parameter_pid')[$i]->target_id) {
+      $parameter = entity_load('datatank_parameter', $pid);
+      if ($parameter) {
+        $query[$parameter->get('name')->value] = isset($parameter->get('default_value')->value) ? $parameter->get('default_value')->value : 0;
+      }
+    }
+  }
+
+  $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
+  $variables['downloadtab'] = $url;
+
+  // Webforms
+  $url = Url::fromUserInput('/node/1');
+  $external_link = \Drupal::l(t('Report a problem with this dataset'), $url);
+  $variables['problem_webform'] = $external_link;
+
+  $url = Url::fromUserInput('/node/1');
+  $external_link = \Drupal::l(t('Help improve our dataset.'), $url);
+  $variables['help_dataset'] = $external_link;
+
   /// ENKEL FULL MODE
   if ($variables['elements']['#view_mode'] == 'full') {
 
     $config = new DrupalConfig();
     $client = new Client($config);
 
-    $dataset = $variables['elements']['#datatank_dataset'];
-
-    // INFO
-    $variables['content'] = $variables['elements'];
-    $variables['date'] = drupal_render($variables['elements']['created']);
-
-    $formats = datatank_available_formats();
-    $format_labels = [];
-    foreach ($formats as $format) {
-      $format_labels[] = $format['label'];
-    }
-    $variables['formats'] = implode(' | ', $format_labels);
-
+    // URL
     $url = Url::fromUri($config->getEndpoint() . $dataset->getName());
     $external_link = \Drupal::l($config->getEndpoint() . $dataset->getName(), $url);
     $variables['url'] = $external_link;
 
-    // For the demo url let's use the first 2 parameters
-    $query = [];
-    for ($i = 0; $i < 2; $i++) {
-      if ($pid = $dataset->get('parameter_pid')[$i]->target_id) {
-        $parameter = entity_load('datatank_parameter', $pid);
-        if ($parameter) {
-          $query[$parameter->get('name')->value] = isset($parameter->get('default_value')->value) ? $parameter->get('default_value')->value : 0;
-        }
-      }
-    }
-
+    // Parameter url
     $query['limit'] = 1;
     $parameter_url = Url::fromUri($config->getEndpoint() . $dataset->getName() . '.json', ['query' => $query]);
     $variables['parameter_url'] = $parameter_url->toString();
@@ -199,17 +213,6 @@ function datatank_preprocess_datatank_dataset(&$variables) {
     $result = $client->get($variables['parameter_url']);
     $variables['parameter_example'] = $result;
 
-    $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
-    $variables['downloadtab'] = $url;
-
-    // Webforms
-    $url = Url::fromUserInput('/node/1');
-    $external_link = \Drupal::l(t('Report a problem with this dataset'), $url);
-    $variables['problem_webform'] = $external_link;
-
-    $url = Url::fromUserInput('/node/1');
-    $external_link = \Drupal::l(t('Help improve our dataset.'), $url);
-    $variables['help_dataset'] = $external_link;
   }
 }
 
