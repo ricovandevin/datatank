@@ -179,7 +179,7 @@ datatank.dataset_settings:
 #    _permission: 'access content'
 
 datatank.datatank_configuration_form:
-  path: '/admin/config/datatank/datatankconfiguration'
+  path: '/admin/config/datatank'
   defaults:
     _form: '\Drupal\datatank\Form\DatatankConfigurationForm'
     _title: 'DatatankConfigurationForm'
