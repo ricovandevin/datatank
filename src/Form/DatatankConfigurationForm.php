@@ -63,6 +63,22 @@ class DatatankConfigurationForm extends ConfigFormBase {
       '#default_value' => isset($newsletter_intro['value']) ? $newsletter_intro['value'] : '',
     );
 
+    $newsletter_success = $config->get('newsletter_success');
+    $form['newsletter_success'] = array(
+      '#type' => 'text_format',
+      '#title' => $this->t('Success message for newsletter subscription'),
+      '#format' => isset($newsletter_success['format']) ? $newsletter_success['format'] : 'html',
+      '#default_value' => isset($newsletter_success['value']) ? $newsletter_success['value'] : '',
+    );
+
+    $newsletter_error = $config->get('newsletter_error');
+    $form['newsletter_error'] = array(
+      '#type' => 'text_format',
+      '#title' => $this->t('Error message for newsletter subscription'),
+      '#format' => isset($newsletter_error['format']) ? $newsletter_error['format'] : 'html',
+      '#default_value' => isset($newsletter_error['value']) ? $newsletter_error['value'] : '',
+    );
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -89,6 +105,14 @@ class DatatankConfigurationForm extends ConfigFormBase {
 
     \Drupal::configFactory()->getEditable('datatank.settings')
       ->set('newsletter_intro', $form_state->getValue('newsletter_intro'))
+      ->save();
+
+    \Drupal::configFactory()->getEditable('datatank.settings')
+      ->set('newsletter_success', $form_state->getValue('newsletter_success'))
+      ->save();
+
+    \Drupal::configFactory()->getEditable('datatank.settings')
+      ->set('newsletter_error', $form_state->getValue('newsletter_error'))
       ->save();
   }
 

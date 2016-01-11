@@ -187,3 +187,13 @@ datatank.datatank_configuration_form:
     _permission: 'access administration pages'
   options:
     _admin_route: TRUE
+
+datatank.subscription_form:
+  path: '/newsletter/subscribe'
+  defaults:
+    _form: '\Drupal\datatank\Form\SubscriptionForm'
+    _title: 'Newsletter'
+  requirements:
+    _permission: 'view published content'
+  options:
+    _admin_route: TRUE
