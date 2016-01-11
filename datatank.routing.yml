@@ -182,9 +182,8 @@ datatank.datatank_configuration_form:
   path: '/admin/config/datatank'
   defaults:
     _form: '\Drupal\datatank\Form\DatatankConfigurationForm'
-    _title: 'DatatankConfigurationForm'
+    _title: 'TVL TheDataTank Configuration'
   requirements:
     _permission: 'access administration pages'
   options:
     _admin_route: TRUE
-
