@@ -8,10 +8,12 @@
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Field;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
+use Drupal\flexmail\FlexmailHelper\FlexmailHelper;
 use Drupal\tdt_client\Client;
 use Drupal\tdt_client\Config\DrupalConfig;
 
@@ -277,5 +279,49 @@ function datatank_available_languages() {
 function datatank_node_insert($node) {
   if ($node->bundle() == 'app') {
     drupal_set_message(t('Thanks for submitting your app, this will go in review.'));
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if (in_array($form_id, ['datatank_feedback_dataset_use_form'])) {
+    $form['subscribe'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('I would like to subscribe to the newsletter too'),
+      '#default_value' => FALSE,
+      '#weight' => 0,
+    );
+
+    $form['#submit'][] = 'datatank_subscribe_form_submit';
+  }
+}
+
+/**
+ * @todo Write function documentation.
+ */
+function datatank_subscribe_form_submit(array &$form, FormStateInterface $form_state) {
+  if ($form_state->getValue('subscribe')) {
+    $flexmail_config = \Drupal::config('flexmail.settings');
+    $config = \Drupal::config('datatank.settings');
+
+    $newsletter_success = $config->get('newsletter_success');
+    $success_message = (string)check_markup($newsletter_success['value'], $newsletter_success['format']);
+    $newsletter_error = $config->get('newsletter_error');
+    $error_message = (string)check_markup($newsletter_error['value'], $newsletter_error['format']);
+    $response = FlexmailHelper::subscribe(
+      $form_state->getValue('email'),
+      $flexmail_config->get('default_list_id'),
+      $success_message
+    );
+
+    if ($response instanceof \Exception) {
+      if ($response->getCode() == 225) {
+        drupal_set_message(t($success_message));
+      } else {
+        drupal_set_message(t($error_message, array('@message' => $response->getMessage())), 'error');
+      }
+    }
   }
 }
