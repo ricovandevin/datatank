@@ -67,13 +67,23 @@ class SubscriptionForm extends FormBase {
       $config = \Drupal::config('datatank.settings');
 
       $newsletter_success = $config->get('newsletter_success');
+      $success_message = (string) check_markup($newsletter_success['value'], $newsletter_success['format']);
       $newsletter_error = $config->get('newsletter_error');
-      FlexmailHelper::subscribe(
+      $error_message = (string) check_markup($newsletter_error['value'], $newsletter_error['format']);
+      $response = FlexmailHelper::subscribe(
         $form_state->getValue('email'),
         $flexmail_config->get('default_list_id'),
-        (string) check_markup($newsletter_success['value'], $newsletter_success['format']),
-        (string) check_markup($newsletter_error['value'], $newsletter_error['format'])
+        $success_message
       );
+
+      if ($response instanceof \Exception) {
+        if ($response->getCode() == 225) {
+          drupal_set_message(t($success_message));
+        }
+        else {
+          drupal_set_message(t($error_message, array('@message' => $response->getMessage())), 'error');
+        }
+      }
     }
 
 }
