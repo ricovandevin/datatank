@@ -49,7 +49,7 @@ class DatasetDownloadConfirm extends ControllerBase {
     $url = $_GET['download_url'];
     $url = Url::fromRoute('datatank.dataset_download_confirm_dowload', [], ['query' => ['download_url' => $url]]);
 
-//    $markup = "<iframe width='1' height='1' frameborder='0' src='" . $url->toString() . "'></iframe>";
+    $markup = "<iframe width='1' height='1' frameborder='0' src='" . $url->toString() . "'></iframe>";
     $markup .= t('Download is being fetched, if download is not working click here @link', ['@link' => \Drupal::l(t('Download'), $url)]);
 
     return [

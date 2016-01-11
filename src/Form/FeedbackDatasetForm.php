@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\datatank\Form\FeedbackDatasetUseForm.
+ * Contains Drupal\datatank\Form\FeedbackDatasetForm.
  */
 
 namespace Drupal\datatank\Form;
@@ -11,24 +11,27 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class FeedbackDatasetUseForm.
+ * Class FeedbackDatasetForm.
  *
  * @package Drupal\datatank\Form
  */
-class FeedbackDatasetUseForm extends FormBase {
+class FeedbackDatasetForm extends FormBase {
 
     /**
      * {@inheritdoc}
      */
     public function getFormId() {
-      return 'datatank_feedback_dataset_use_form';
+      return 'datatank_feedback_dataset_form';
     }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(array $form, FormStateInterface $form_state) {
-      $form['#prefix'] = t('We would like to know which datasets you use so that we can make them even better.');
+      $config = \Drupal::config('datatank.settings');
+
+      $intro = $config->get('feedback_intro');
+      $form['#prefix'] = check_markup($intro['value'], $intro['format']);
 
       $form['email'] = array(
         '#type' => 'email',

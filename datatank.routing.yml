@@ -195,5 +195,11 @@ datatank.subscription_form:
     _title: 'Newsletter'
   requirements:
     _permission: 'view published content'
-  options:
-    _admin_route: TRUE
+
+datatank.feedback_dataset_form:
+  path: '/feedback'
+  defaults:
+    _form: '\Drupal\datatank\Form\FeedbackDatasetForm'
+    _title: 'Help us to serve you our data in an even better way'
+  requirements:
+    _permission: 'view published content'

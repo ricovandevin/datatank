@@ -283,10 +283,10 @@ function datatank_node_insert($node) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_alter().
  */
 function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if (in_array($form_id, ['datatank_feedback_dataset_use_form'])) {
+  if (in_array($form_id, ['datatank_feedback_dataset_form', 'datatank_feedback_dataset_use_form'])) {
     $form['subscribe'] = array(
       '#type' => 'checkbox',
       '#title' => t('I would like to subscribe to the newsletter too'),
