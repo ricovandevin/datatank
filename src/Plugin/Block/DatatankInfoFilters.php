@@ -30,7 +30,13 @@ class DatatankInfoFilters extends BlockBase {
     $info_link = \Drupal::l('?', $url);;
 
     $build = [];
-    $build['datatank_info_filters']['#markup'] = t('Filter datasets') . '<span class="info_link">' . $info_link . '</span>';
+    $build['datatank_info_filters'] = [
+      '#theme' => 'datatank_info_filters',
+      '#title' => $this->t('Filter datasets'),
+      '#link' => $info_link,
+    ];
+
+    // t('Filter datasets') . '<span class="info_link">' . $info_link . '</span>';
 
     return $build;
   }

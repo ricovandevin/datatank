@@ -147,11 +147,17 @@ function datatank_block_build_alter(array &$build, \Drupal\Core\Block\BlockPlugi
  * Implements hook_theme().
  */
 function datatank_theme() {
-  return array(
-    'datatank_dataset' => array(
+  return [
+    'datatank_dataset' => [
       'render element' => 'elements',
-    ),
-  );
+    ],
+    'datatank_info_filters' => [
+      'variables' => [
+        'title' => '',
+        'link' => '',
+      ]
+    ]
+  ];
 }
 
 /**
