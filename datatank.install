@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Delete all terms from keywords
+ */
+function datatank_update_8001() {
+  $field_dataset_keyword = \Drupal::entityManager()
+    ->getStorage('taxonomy_term')
+    ->loadTree('field_dataset_keyword');
+
+  foreach ($field_dataset_keyword as $key) {
+    entity_delete_multiple('taxonomy_term', array($key->tid));
+  }
+
+
+}
