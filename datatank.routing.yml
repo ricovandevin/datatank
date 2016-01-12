@@ -103,7 +103,7 @@ entity.datatank_dataset.canonical:
     _entity_view: 'datatank_dataset'
     _title_callback: '\Drupal\datatank\Controller\DatasetController::title'
   requirements:
-    _permission: 'view datatank_dataset entity'
+    _entity_access: 'datatank_dataset.view'
 
 entity.datatank_dataset.download:
   path: '/datatank/dataset/{datatank_dataset}/download'
