@@ -302,6 +302,11 @@ function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_
 
     $form['#submit'][] = 'datatank_subscribe_form_submit';
   }
+
+  // Add a placeholder to views exposed filter.
+  if($form_id == 'views_exposed_form' && $form['#id'] == 'views-exposed-form-search-page-1') {
+    $form['search_api_fulltext']['#placeholder'] = t('Type one or more keywords');
+  }
 }
 
 /**
