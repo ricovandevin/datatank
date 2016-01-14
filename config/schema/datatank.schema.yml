@@ -7,6 +7,18 @@ datatank.settings:
    datatank_link_info_filters:
      type: label
      label: "link to info filters page"
+   newsletter_intro:
+     type: text_format
+     label: "Newsletter info"
+   newsletter_success:
+     type: text_format
+     label: "Newsletter Success"
+   newsletter_error:
+     type: text_format
+     label: "Newsletter error"
+   feedback_intro:
+     type: text_format
+     label: "Newsletter intro"
    default_langcode:
      type: string
      label: 'Site default language code'
