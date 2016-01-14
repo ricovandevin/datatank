@@ -60,6 +60,9 @@ class DatasetDownload extends FormBase {
       ->loadTree('region');
 
     $regions = [];
+
+    $regions[0] = t('All regions');
+
     foreach ($regions_raw as $reg) {
       $regions[$reg->tid] = $reg->name;
     }
@@ -68,6 +71,7 @@ class DatasetDownload extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Tourist region'),
       '#options' => $regions,
+      '#default_value' => 0,
       '#states' => array(
         'visible' => array(
           ':input[name="location"]' => array('value' => 'region'),
@@ -78,6 +82,8 @@ class DatasetDownload extends FormBase {
     $postal_codes_raw = array_map('str_getcsv', file(\Drupal::root() . '/' . drupal_get_path("module", 'datatank') . '/zipcodes2.csv'));
     $postal_codes = [];
 
+    $postal_codes[0] = t('All towns');
+
     foreach ($postal_codes_raw as $postal_code_raw) {
       $postal_codes[strtolower($postal_code_raw[1])] = $postal_code_raw[1];
     }
@@ -86,6 +92,7 @@ class DatasetDownload extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Town'),
       '#options' => $postal_codes,
+      '#default_value' => 0,
       '#states' => array(
         'visible' => array(
           ':input[name="location"]' => array('value' => 'town'),
@@ -101,6 +108,9 @@ class DatasetDownload extends FormBase {
           ':input[name="location"]' => array('value' => 'coor'),
         ),
       ),
+      '#attributes' => [
+        'class' => ['dataset-download__filters-coordinates']
+      ],
     ];
 
     $config = \Drupal::configFactory()->getEditable('datatank.settings');
@@ -109,29 +119,28 @@ class DatasetDownload extends FormBase {
 
     $form['filter']['coor']['info'] = [
       '#type' => 'markup',
-      '#markup' => '<b>1. </b>' . t('Lambert 72 coordinates') . $external_link,
+      '#markup' => '<div class="dataset-download__filters-coordinates_label"><b>1. </b>' . t('Lambert 72 coordinates') . '</div>' . $external_link,
     ];
 
     $form['filter']['coor']['x_coord'] = [
       '#type' => 'textfield',
       '#title' => $this->t('X='),
-      '#placeholder' => t('Ex: 188600'),
+      '#placeholder' => t('Ex. 188600'),
     ];
 
     $form['filter']['coor']['y_coord'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Y='),
-      '#placeholder' => t('Ex: 188600'),
+      '#placeholder' => t('Ex. 188600'),
     ];
 
     $form['filter']['coor']['radiusinfo'] = [
-      '#markup' => '<b>2. </b>' . t('Radius (in meters)'),
+      '#markup' => '<div class="dataset-download__filters-radius_label"><b>2. </b>' . t('Radius (in meters)') . '</div>',
     ];
 
     $form['filter']['coor']['radius'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Range (meters)'),
-      '#placeholder' => t('Ex: 5000'),
+      '#placeholder' => t('Ex. 5000'),
     ];
 
     $form['filter']['labels'] = [
