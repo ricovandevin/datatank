@@ -65,3 +65,9 @@ datatank_dataset.delete_confirm:
   base_route:  entity.datatank_dataset.canonical
   title: Delete
   weight: 10
+
+#translate form
+datatank.datatank_configuration_form:
+  route_name: datatank.datatank_configuration_form
+  base_route: datatank.datatank_configuration_form
+  title: View
