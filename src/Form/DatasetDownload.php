@@ -239,11 +239,11 @@ class DatasetDownload extends FormBase {
     ];
 
     $form['result']['count'] = [
-      '#markup' => $this->t('@count data found in dataset', array('@count' => count($result)))
+      '#markup' => '<div class="dataset__results"><span class="dataset__results-amount">' . $this->t('@count ', array('@count' => count($result))) . '</span>' . t('data found in dataset') . '</div>',
     ];
 
     $form['result']['download'] = [
-      '#markup' => $this->t('Download as:'),
+      '#markup' => '<div class="dataset-download__result-label">' . $this->t('Download as:') . '</div>',
     ];
 
     $formats = datatank_available_formats();
@@ -252,7 +252,7 @@ class DatasetDownload extends FormBase {
       $url = Url::fromRoute('datatank.dataset_download_confirm_index', [], ['query' => ['download_url' => $data_url->toString()]]);
 
       $form['result']['download'][$key] = [
-        '#markup' => '<div>' . \Drupal::l($format['label'], $url) . '</div>'
+        '#markup' => '<div class="button__download">' . \Drupal::l($format['label'], $url) . '</div>'
       ];
     }
 
