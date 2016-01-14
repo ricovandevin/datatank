@@ -9,6 +9,7 @@ namespace Drupal\datatank\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Class DatatankConfigurationForm.
@@ -81,10 +82,10 @@ class DatatankConfigurationForm extends ConfigFormBase {
 
     $feedback_intro = $config->get('feedback_intro');
     $form['feedback_intro'] = array(
-        '#type' => 'text_format',
-        '#title' => $this->t('Introduction text for the feedback page'),
-        '#format' => isset($feedback_intro['format']) ? $feedback_intro['format'] : 'html',
-        '#default_value' => isset($feedback_intro['value']) ? $feedback_intro['value'] : '',
+      '#type' => 'text_format',
+      '#title' => $this->t('Introduction text for the feedback page'),
+      '#format' => isset($feedback_intro['format']) ? $feedback_intro['format'] : 'html',
+      '#default_value' => isset($feedback_intro['value']) ? $feedback_intro['value'] : '',
     );
 
     return parent::buildForm($form, $form_state);
@@ -126,6 +127,9 @@ class DatatankConfigurationForm extends ConfigFormBase {
     \Drupal::configFactory()->getEditable('datatank.settings')
       ->set('feedback_intro', $form_state->getValue('feedback_intro'))
       ->save();
+
+
+    Cache::invalidateTags(array('block_view'));
   }
 
 }
