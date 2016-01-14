@@ -34,6 +34,9 @@ class DatasetDownload extends FormBase {
     // FILTER
     $form['filter'] = [
       '#type' => 'container',
+      '#attributes' => [
+        'class' => ['dataset-download__filters']
+      ]
     ];
 
     $form['filter']['title'] = [
@@ -102,11 +105,11 @@ class DatasetDownload extends FormBase {
 
     $config = \Drupal::configFactory()->getEditable('datatank.settings');
     $url = Url::fromUserInput($config->get('datatank_link_lambert72'));
-    $external_link = \Drupal::l('?', $url);
+    $external_link = '<span class="info-link">' . \Drupal::l('?', $url) . '</span>';
 
     $form['filter']['coor']['info'] = [
       '#type' => 'markup',
-      '#markup' => t('1) Lambert 72 coordinates') . $external_link,
+      '#markup' => '<b>1. </b>' . t('Lambert 72 coordinates') . $external_link,
     ];
 
     $form['filter']['coor']['x_coord'] = [
@@ -122,7 +125,7 @@ class DatasetDownload extends FormBase {
     ];
 
     $form['filter']['coor']['radiusinfo'] = [
-      '#markup' => t('2) Radius in meters'),
+      '#markup' => '<b>2. </b>' . t('Radius (in meters)'),
     ];
 
     $form['filter']['coor']['radius'] = [
@@ -154,7 +157,10 @@ class DatasetDownload extends FormBase {
 
 
     $form['language'] = [
-      '#type' => 'container'
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['dataset-download__language']
+      ]
     ];
 
     $form['language']['langcode'] = [
@@ -217,7 +223,10 @@ class DatasetDownload extends FormBase {
     $result = $client->get($data_url->toString());
 
     $form['result'] = [
-      '#type' => 'container'
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['dataset-download__result']
+      ]
     ];
 
     $form['result']['count'] = [
