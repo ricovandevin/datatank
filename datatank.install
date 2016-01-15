@@ -11,6 +11,25 @@ function datatank_update_8001() {
   foreach ($field_dataset_keyword as $key) {
     entity_delete_multiple('taxonomy_term', array($key->tid));
   }
+}
 
+/**
+ * Delete all terms from field_dataset_type and field_dataset_dataset_type
+ */
+function datatank_update_8002() {
+  $field_dataset_keyword = \Drupal::entityManager()
+    ->getStorage('taxonomy_term')
+    ->loadTree('field_dataset_dataset_type');
 
+  foreach ($field_dataset_keyword as $key) {
+    entity_delete_multiple('taxonomy_term', array($key->tid));
+  }
+
+  $field_dataset_keyword = \Drupal::entityManager()
+    ->getStorage('taxonomy_term')
+    ->loadTree('field_dataset_type');
+
+  foreach ($field_dataset_keyword as $key) {
+    entity_delete_multiple('taxonomy_term', array($key->tid));
+  }
 }

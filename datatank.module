@@ -121,12 +121,13 @@ function datatank_helper_get_entries_of_field($field_name) {
 function datatank_helper_get_tax_fields() {
   return [
     'field_dataset_category' => 'category',
-    'field_dataset_type' => 'dataset_type',
+    'field_dataset_type' => 'type',
+    'field_dataset_dataset_type' => 'dataset_type',
     'field_dataset_keyword' => 'keyword',
     'field_dataset_license' => 'license',
     'field_dataset_target_group' => 'target_group',
     'field_dataset_publisher_name' => 'publisher_name',
-    'field_dataset_language' => 'language'
+    'field_dataset_language' => 'language',
   ];
 }
 
