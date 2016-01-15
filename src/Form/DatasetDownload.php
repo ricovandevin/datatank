@@ -31,6 +31,14 @@ class DatasetDownload extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $datatank_dataset = NULL) {
+    // Dataset intro
+    $datatank_dataset->__set('download', TRUE);
+    $entity_view = entity_view($datatank_dataset, 'full');
+    $form['intro_dataset'] = [
+      '#markup' => render($entity_view)
+    ];
+
+
     // FILTER
     $form['filter'] = [
       '#type' => 'container',
