@@ -311,17 +311,29 @@ function datatank_node_insert($node) {
  * Implements hook_form_alter().
  */
 function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $config = \Drupal::config('datatank.settings');
+
   if (in_array($form_id, ['contact_message_feedback_form', 'contact_message_feedback_short_form'])) {
+    // Add a subscribe to newsletter checkbox to some forms.
     $form['subscribe'] = array(
       '#type' => 'checkbox',
       '#title' => t('I would like to subscribe to the newsletter too'),
       '#default_value' => FALSE,
       '#weight' => 998,
     );
-
     $form['actions']['#weight'] = 999;
 
     $form['#submit'][] = 'datatank_subscribe_form_submit';
+
+    // Hide preview button.
+    $form['actions']['preview']['#access'] = FALSE;
+    $form['actions']['submit']['#value'] = t('Subscribe');
+  }
+
+  // Add an introduction text to the feedback form block.
+  if ($form_id == 'contact_message_feedback_short_form') {
+    $feedback_intro = $config->get('feedback_intro');
+    $form['#prefix'] = check_markup($feedback_intro['value'], $feedback_intro['format']);
   }
 
   // Add a placeholder to views exposed filter and change submit button text.
