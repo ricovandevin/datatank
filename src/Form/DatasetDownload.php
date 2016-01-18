@@ -31,9 +31,20 @@ class DatasetDownload extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $datatank_dataset = NULL) {
+    // Dataset intro
+    $datatank_dataset->__set('download', TRUE);
+    $entity_view = entity_view($datatank_dataset, 'full');
+    $form['intro_dataset'] = [
+      '#markup' => render($entity_view)
+    ];
+
+
     // FILTER
     $form['filter'] = [
       '#type' => 'container',
+      '#attributes' => [
+        'class' => ['dataset-download__filters']
+      ]
     ];
 
     $form['filter']['title'] = [
@@ -57,6 +68,9 @@ class DatasetDownload extends FormBase {
       ->loadTree('region');
 
     $regions = [];
+
+    $regions[0] = t('All regions');
+
     foreach ($regions_raw as $reg) {
       $regions[$reg->tid] = $reg->name;
     }
@@ -65,6 +79,7 @@ class DatasetDownload extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Tourist region'),
       '#options' => $regions,
+      '#default_value' => 0,
       '#states' => array(
         'visible' => array(
           ':input[name="location"]' => array('value' => 'region'),
@@ -75,6 +90,8 @@ class DatasetDownload extends FormBase {
     $postal_codes_raw = array_map('str_getcsv', file(\Drupal::root() . '/' . drupal_get_path("module", 'datatank') . '/zipcodes2.csv'));
     $postal_codes = [];
 
+    $postal_codes[0] = t('All towns');
+
     foreach ($postal_codes_raw as $postal_code_raw) {
       $postal_codes[strtolower($postal_code_raw[1])] = $postal_code_raw[1];
     }
@@ -83,6 +100,7 @@ class DatasetDownload extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Town'),
       '#options' => $postal_codes,
+      '#default_value' => 0,
       '#states' => array(
         'visible' => array(
           ':input[name="location"]' => array('value' => 'town'),
@@ -98,37 +116,39 @@ class DatasetDownload extends FormBase {
           ':input[name="location"]' => array('value' => 'coor'),
         ),
       ),
+      '#attributes' => [
+        'class' => ['dataset-download__filters-coordinates']
+      ],
     ];
 
     $config = \Drupal::configFactory()->getEditable('datatank.settings');
     $url = Url::fromUserInput($config->get('datatank_link_lambert72'));
-    $external_link = \Drupal::l('?', $url);
+    $external_link = '<span class="info-link">' . \Drupal::l('?', $url) . '</span>';
 
     $form['filter']['coor']['info'] = [
       '#type' => 'markup',
-      '#markup' => t('1) Lambert 72 coordinates') . $external_link,
+      '#markup' => '<div class="dataset-download__filters-coordinates_label"><b>1. </b>' . t('Lambert 72 coordinates') . '</div>' . $external_link,
     ];
 
     $form['filter']['coor']['x_coord'] = [
       '#type' => 'textfield',
       '#title' => $this->t('X='),
-      '#placeholder' => t('Ex: 188600'),
+      '#placeholder' => t('Ex. 188600'),
     ];
 
     $form['filter']['coor']['y_coord'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Y='),
-      '#placeholder' => t('Ex: 188600'),
+      '#placeholder' => t('Ex. 188600'),
     ];
 
     $form['filter']['coor']['radiusinfo'] = [
-      '#markup' => t('2) Radius in meters'),
+      '#markup' => '<div class="dataset-download__filters-radius_label"><b>2. </b>' . t('Radius (in meters)') . '</div>',
     ];
 
     $form['filter']['coor']['radius'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Range (meters)'),
-      '#placeholder' => t('Ex: 5000'),
+      '#placeholder' => t('Ex. 5000'),
     ];
 
     $form['filter']['labels'] = [
@@ -154,7 +174,10 @@ class DatasetDownload extends FormBase {
 
 
     $form['language'] = [
-      '#type' => 'container'
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['dataset-download__language']
+      ]
     ];
 
     $form['language']['langcode'] = [
@@ -217,15 +240,18 @@ class DatasetDownload extends FormBase {
     $result = $client->get($data_url->toString());
 
     $form['result'] = [
-      '#type' => 'container'
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['dataset-download__result']
+      ]
     ];
 
     $form['result']['count'] = [
-      '#markup' => $this->t('@count data found in dataset', array('@count' => count($result)))
+      '#markup' => '<div class="dataset__results"><span class="dataset__results-amount">' . $this->t('@count ', array('@count' => count($result))) . '</span>' . t('data found in dataset') . '</div>',
     ];
 
     $form['result']['download'] = [
-      '#markup' => $this->t('Download as:'),
+      '#markup' => '<div class="dataset-download__result-label">' . $this->t('Download as:') . '</div>',
     ];
 
     $formats = datatank_available_formats();
@@ -234,7 +260,7 @@ class DatasetDownload extends FormBase {
       $url = Url::fromRoute('datatank.dataset_download_confirm_index', [], ['query' => ['download_url' => $data_url->toString()]]);
 
       $form['result']['download'][$key] = [
-        '#markup' => '<div>' . \Drupal::l($format['label'], $url) . '</div>'
+        '#markup' => '<div class="button__download">' . \Drupal::l($format['label'], $url) . '</div>'
       ];
     }
 

@@ -1,7 +1,7 @@
 #Global
 datatank.settings:
   title: 'TheDataTank'
-  description: 'Configure DataTank'
+  description: 'Configure DataTank entitys'
   route_name:  datatank.column_settings
   parent: system.admin_structure
 
@@ -10,6 +10,12 @@ datatank.content:
   description: 'DataTank Content'
   route_name: entity.datatank_column.collection
   parent: system.admin_content
+
+datatank.config:
+  title: 'TheDataTank settings'
+  description: 'Configure DataTank'
+  route_name:  datatank.datatank_configuration_form
+  parent: system.admin_config
 
 #Column
 datatank.column_settings:
@@ -37,7 +43,6 @@ entity.datatank_parameter.collection:
   route_name: entity.datatank_parameter.collection
   parent: datatank.content
 
-
 #Dataset
 datatank.dataset_settings:
   title: 'Dataset'
@@ -51,3 +56,8 @@ entity.datatank_dataset.collection:
   route_name: entity.datatank_dataset.collection
   parent: datatank.content
 
+#Dataset global settings
+datatank.global_settings:
+  title: 'Dataset'
+  description: 'Configure dataset'
+  route_name:  datatank.datatank_configuration_form

@@ -27,11 +27,15 @@ class DatatankInfoFilters extends BlockBase {
   public function build() {
     $config = \Drupal::configFactory()->getEditable('datatank.settings');
     $url = Url::fromUserInput($config->get('datatank_link_info_filters'));
-    $info_link = \Drupal::l('?', $url);;
+    $info_link = $url;
 
     $build = [];
-    $build['datatank_info_filters']['#markup'] = t('Filter datasets') . '<span class="info_link">' . $info_link . '</span>';
-
+    $build['datatank_info_filters'] = [
+      '#theme' => 'datatank_info_filters',
+      '#title' => $this->t('Filter datasets'),
+      '#link' => $info_link,
+    ];
+    
     return $build;
   }
 

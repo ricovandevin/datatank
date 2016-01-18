@@ -29,10 +29,8 @@ class DatatankMigratePostSave implements EventSubscriberInterface {
   /**
    * MigrateEvents::POST_ROW_SAVE event handler.
    *
-   * @param GetResponseEvent $event
-   *   Instance of Symfony\Component\HttpKernel\Event\GetResponseEvent.
    */
-  public function updateTranslations(GetResponseEvent $event) {
+  public function updateTranslations($event) {
 
     $tranlatable_fields = [
       'ParameterMigration' => [
