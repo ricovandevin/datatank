@@ -21,7 +21,7 @@ class ParameterMigration extends SourcePluginBase {
 
   public function initializeIterator() {
     $config = new DrupalConfig();
-    $consumer = new Consumer($config);
+    $consumer = new Consumer($config, FALSE);
 
     $datasets = $consumer->getDatasets();
     $parameters = [];

@@ -21,7 +21,7 @@ class DatasetMigration extends SourcePluginBase {
 
   public function initializeIterator() {
     $config = new DrupalConfig();
-    $consumer = new Consumer($config);
+    $consumer = new Consumer($config, FALSE);
 
     $datasets = $consumer->getDatasetsArray();
 
@@ -34,6 +34,8 @@ class DatasetMigration extends SourcePluginBase {
    */
   public function prepareRow(Row $row) {
     $source = $row->getSource();
+    $source['dataset']->merge_definition();
+
     $row->setSourceProperty('parameters', array_keys($source['dataset']->getParameters()));
     $row->setSourceProperty('columns', array_keys($source['dataset']->getColumns()));
 
@@ -60,6 +62,14 @@ class DatasetMigration extends SourcePluginBase {
 
     $row->setSourceProperty('issued', strtotime($fields['issued']->getValue()));
     $row->setSourceProperty('modified', strtotime($fields['modified']->getValue()));
+
+    if (isset($fields['wfs_uri'])) {
+      $row->setSourceProperty('extra_links', [
+        $fields['wfs_uri']->getValue(),
+        $fields['wms_uri']->getValue(),
+      ]);
+    }
+
 
     return parent::prepareRow($row);
   }
