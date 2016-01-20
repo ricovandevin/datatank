@@ -28,7 +28,12 @@ class ParameterAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
-  /*public function access(EntityInterface $entity, $operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
-    // TODO
-  }*/
+  public function access(EntityInterface $entity, $operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
+    $account = $this->prepareUser($account);
+    if ($operation === 'view') {
+      return AccessResult::allowed();
+    }
+
+    return parent::checkAccess($entity, $operation, $account);
+  }
 }
