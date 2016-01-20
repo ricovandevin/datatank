@@ -33,7 +33,7 @@ class DatatankLanguageBlock extends LanguageBlock implements ContainerFactoryPlu
         unset($build['#links']['nl']);
       }
 
-      if (!$entity->hasTranslation('EN')) {
+      if (!$entity->hasTranslation('en')) {
         unset($build['#links']['en']);
       }
 
