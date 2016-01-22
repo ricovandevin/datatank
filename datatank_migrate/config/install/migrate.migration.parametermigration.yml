@@ -11,3 +11,5 @@ process:
   documentation: documentation
   required: required
   default_value: default_value
+migration_tags:
+  - datatank

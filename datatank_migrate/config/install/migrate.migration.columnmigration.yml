@@ -10,3 +10,5 @@ process:
   langcode: langcode
   name: column_name
   documentation: documentation
+migration_tags:
+  - datatank

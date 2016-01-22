@@ -35,3 +35,5 @@ migration_dependencies:
   required:
     - datatank_migrate_column
     - datatank_migrate_parameter
+migration_tags:
+  - datatank
