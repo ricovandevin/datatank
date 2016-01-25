@@ -53,10 +53,14 @@ class DatatankShare extends BlockBase {
     $build['mail'] = \Drupal::service('forward.link_builder')
       ->buildForwardEntityLink($node, $settings);
 
+    // Newsletter url
+    $newsletter_url = Url::fromUserInput("/newsletter/subscribe");
+    $build['newsletter']['#markup'] = \Drupal::l(t('Subscribe for the newsletter'), $newsletter_url);
+
 
     $build['#cache'] = array(
-      //'contexts' => array('url'),
-      'max-age' => 0,
+      'contexts' => array('url'),
+      //'max-age' => 0,
     );
     return $build;
   }
