@@ -181,14 +181,6 @@ function datatank_preprocess_datatank_dataset(&$variables) {
     $variables['wfs'] = FALSE;
   }
 
-  // DATE
-  $formats = datatank_available_formats();
-  $format_labels = [];
-  foreach ($formats as $format) {
-    $format_labels[] = $format['label'];
-  }
-  $variables['formats'] = implode(' | ', $format_labels);
-
   $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
   $variables['downloadtab'] = $url;
 
@@ -203,6 +195,13 @@ function datatank_preprocess_datatank_dataset(&$variables) {
 
 
   if (!$variables['wfs']) {
+    $formats = datatank_available_formats();
+    $format_labels = [];
+    foreach ($formats as $format) {
+      $format_labels[] = $format['label'];
+    }
+    $variables['formats'] = implode(' | ', $format_labels);
+    
     // For the demo url let's use the first 2 parameters
     $query = [];
     for ($i = 0; $i < 2; $i++) {
@@ -311,7 +310,10 @@ function datatank_node_insert($node) {
  * Implements hook_form_alter().
  */
 function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if (in_array($form_id, ['contact_message_feedback_form', 'contact_message_feedback_short_form'])) {
+  if (in_array($form_id, [
+    'contact_message_feedback_form',
+    'contact_message_feedback_short_form'
+  ])) {
     $form['subscribe'] = array(
       '#type' => 'checkbox',
       '#title' => t('I would like to subscribe to the newsletter too'),
