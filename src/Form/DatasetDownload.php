@@ -275,4 +275,8 @@ class DatasetDownload extends FormBase {
     $form_state->setRebuild();
   }
 
+  public function title($datatank_dataset) {
+    return $datatank_dataset->field_dataset_title->value;
+  }
+
 }
