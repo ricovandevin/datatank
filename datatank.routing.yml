@@ -195,3 +195,11 @@ datatank.subscription_form:
     _title: 'Newsletter'
   requirements:
     _permission: 'view published content'
+    
+datatank.app_form:
+  path: '/app/submit'
+  defaults:
+    _form: '\Drupal\datatank\Form\AppForm'
+    _title: 'Submit app'
+  requirements:
+    _permission: 'view published content'
