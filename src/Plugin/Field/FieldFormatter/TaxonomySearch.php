@@ -24,20 +24,18 @@ use Drupal\Core\Url;
  */
 class TaxonomySearch extends EntityReferenceLabelFormatter {
 
-
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
-
     foreach ($elements as $delta => &$element) {
-      $url = Url::fromUserInput('/datasets', ['query' => ['f[0]' => 'type:' . $element['#title']]]);
+      $url = Url::fromRoute('view.search.page_1', ['query' => ['f[0]' => 'type:' . $element['#title']], 'absolute' => TRUE]);
       $element['#url'] = $url;
+      unset($element['#options']['language']);
     }
 
     return $elements;
   }
-
 
 }

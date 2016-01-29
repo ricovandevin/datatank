@@ -64,8 +64,8 @@ class DatasetDownload extends FormBase {
     ];
 
     $regions_raw = \Drupal::entityManager()
-      ->getStorage('taxonomy_term')
-      ->loadTree('region');
+        ->getStorage('taxonomy_term')
+        ->loadTree('region');
 
     $regions = [];
 
@@ -87,13 +87,13 @@ class DatasetDownload extends FormBase {
       ),
     ];
 
-    $postal_codes_raw = array_map('str_getcsv', file(\Drupal::root() . '/' . drupal_get_path("module", 'datatank') . '/zipcodes2.csv'));
+    $postal_codes_raw = array_map('str_getcsv', file(\Drupal::root() . '/' . drupal_get_path("module", 'datatank') . '/zipcodes.csv'));
     $postal_codes = [];
 
     $postal_codes[0] = t('All towns');
 
     foreach ($postal_codes_raw as $postal_code_raw) {
-      $postal_codes[strtolower($postal_code_raw[1])] = $postal_code_raw[1];
+      $postal_codes[strtolower($postal_code_raw[1])] = $postal_code_raw[0] . '-' . $postal_code_raw[1];
     }
 
     $form['filter']['town'] = [
@@ -164,7 +164,10 @@ class DatasetDownload extends FormBase {
     // laatste wijziging
     $form['filter']['timestamp'] = [
       '#type' => 'date',
-      '#title' => $this->t('Last changed')
+      '#title' => $this->t('Last changed'),
+      '#description' => $this->t('Format: @date', array('@date' => format_date(time(), 'custom', 'Y-m-d')))
+        //'#default_value' => array('year' => 2010, 'month' => 2, 'day' => 12),
+        //'#default_value' => '2010-02-01',
     ];
 
     $form['filter']['submit'] = [
@@ -206,8 +209,8 @@ class DatasetDownload extends FormBase {
       case 'region':
         if ($form_state->hasValue('region')) {
           $term = \Drupal::entityManager()
-            ->getStorage('taxonomy_term')
-            ->load($form_state->getValue('region'));
+              ->getStorage('taxonomy_term')
+              ->load($form_state->getValue('region'));
           $query['region'] = $term->get('name')->value;
         }
         break;
@@ -266,6 +269,23 @@ class DatasetDownload extends FormBase {
 
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    if ($form_state->hasValue('timestamp')) {
+      $timestamp = $form_state->getValue('timestamp');
+      if (strtotime($timestamp)) {
+        $test_date = format_date(strtotime($timestamp), 'custom', 'Y-m-d');
+        if ($test_date != $timestamp) {
+          $form_state->setErrorByName('timestamp', $this->t('Last changed is not in the right format.'));
+        }
+      } else {
+        $form_state->setErrorByName('timestamp', $this->t('Last changed is not in the right format.'));
+      }
+    }
   }
 
   /**
