@@ -63,7 +63,7 @@ class AppForm extends FormBase {
     }
 
     $form['type'] = [
-      '#type' => 'select',
+      '#type' => 'checkboxes',
       '#options' => $types,
       '#title' => $this->t('Type'),
       '#required' => TRUE,
