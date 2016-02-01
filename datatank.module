@@ -172,8 +172,7 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   $dataset = $variables['elements']['#datatank_dataset'];
   $variables['is_download_page'] = $dataset->__get('download') ? TRUE : FALSE;
 
-  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)
-    ->getValue()['target_id']);
+  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)->getValue()['target_id']);
   if ($type && $type->getName() == 'wfs') {
     $variables['wfs'] = TRUE;
   }
@@ -183,6 +182,15 @@ function datatank_preprocess_datatank_dataset(&$variables) {
 
   $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
   $variables['downloadtab'] = $url;
+
+    // Classes
+  $dataset_type = taxonomy_term_load($dataset->field_dataset_dataset_type->get(0)->getValue('target_id')['target_id']);
+  $classes = [];
+  if($dataset_type) {
+    $classes[] = Html::cleanCssIdentifier(strtolower($dataset_type->getName()));
+  }
+
+  $variables['classes'] = implode(' ', $classes);
 
   // Webforms
   $url = Url::fromUserInput('/node/1');
