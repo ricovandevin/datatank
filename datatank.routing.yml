@@ -194,12 +194,12 @@ datatank.subscription_form:
     _form: '\Drupal\datatank\Form\SubscriptionForm'
     _title: 'Newsletter'
   requirements:
-    _permission: 'view published content'
+    _permission: 'access content'
     
 datatank.app_form:
   path: '/app/submit'
   defaults:
     _form: '\Drupal\datatank\Form\AppForm'
-    _title: 'Submit app'
+    _title_callback: '\Drupal\datatank\Form\AppForm::title'
   requirements:
-    _permission: 'view published content'
+    _permission: 'access content'

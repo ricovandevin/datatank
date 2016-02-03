@@ -25,6 +25,10 @@ class AppForm extends FormBase {
     return 'app_form';
   }
 
+  public function title() {
+    return $this->t('Submit app');
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -55,8 +59,8 @@ class AppForm extends FormBase {
 
 
     $types_raw = \Drupal::entityManager()
-        ->getStorage('taxonomy_term')
-        ->loadTree('type');
+      ->getStorage('taxonomy_term')
+      ->loadTree('type');
     $types = [];
     foreach ($types_raw as $type) {
       $types[$type->tid] = $type->name;
@@ -112,17 +116,17 @@ class AppForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $node = Node::create(array(
-          'type' => 'app',
-          'title' => $form_state->getValue('title_en'),
-          'langcode' => 'en',
-          'uid' => '1',
-          'status' => 0,
-          'body' => $form_state->getValue('description_en'),
-          'field_app_email' => $form_state->getValue('email'),
-          'field_app_image' => $form_state->getValue('image'),
-          'field_app_name' => $form_state->getValue('name'),
-          'field_app_organisation' => $form_state->getValue('organisation'),
-          'field_app_type' => $form_state->getValue('type'),
+        'type' => 'app',
+        'title' => $form_state->getValue('title_en'),
+        'langcode' => 'en',
+        'uid' => '1',
+        'status' => 0,
+        'body' => $form_state->getValue('description_en'),
+        'field_app_email' => $form_state->getValue('email'),
+        'field_app_image' => $form_state->getValue('image'),
+        'field_app_name' => $form_state->getValue('name'),
+        'field_app_organisation' => $form_state->getValue('organisation'),
+        'field_app_type' => $form_state->getValue('type'),
     ));
     $node->save();
 
