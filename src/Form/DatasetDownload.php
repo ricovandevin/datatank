@@ -69,7 +69,7 @@ class DatasetDownload extends FormBase {
         ->loadTree('region');
 
       // Needed for Select 2 empty option
-      $regions = ['' => ''];
+      $regions = ['' => '', 0 => t('All regions')];
 
       foreach ($regions_raw as $reg) {
         $regions[$reg->tid] = $reg->name;
@@ -92,7 +92,7 @@ class DatasetDownload extends FormBase {
 
       $postal_codes_raw = array_map('str_getcsv', file(\Drupal::root() . '/' . drupal_get_path("module", 'datatank') . '/zipcodes.csv'));
       // Needed for Select 2 empty option
-      $postal_codes = ['' => ''];
+      $postal_codes = ['' => '', 0 => t('All towns')];
 
       foreach ($postal_codes_raw as $postal_code_raw) {
         //$postal_codes[strtolower($postal_code_raw[1])] = $postal_code_raw[0] . '-' . $postal_code_raw[1];
@@ -110,7 +110,7 @@ class DatasetDownload extends FormBase {
           ),
         ),
         '#attributes' => [
-          'data-placeholder' => t('Town')
+          'data-placeholder' => t('All towns')
         ],
       ];
 
@@ -208,13 +208,13 @@ class DatasetDownload extends FormBase {
 
     switch ($form_state->getValue('location')) {
       case 'town' :
-        if ($form_state->hasValue('town')) {
+        if ($form_state->hasValue('town') && $form_state->getValue('town')) {
           $query['city'] = $form_state->getValue('town');
         }
         break;
 
       case 'region':
-        if ($form_state->hasValue('region')) {
+        if ($form_state->hasValue('region') && $form_state->getValue('region')) {
           $term = \Drupal::entityManager()
             ->getStorage('taxonomy_term')
             ->load($form_state->getValue('region'));
