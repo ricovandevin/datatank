@@ -133,6 +133,7 @@ class AppForm extends FormBase {
     $values = [
       'title' => $form_state->getValue('title_nl'),
       'body' => $form_state->getValue('description_nl'),
+      'uid' => '1',
     ];
     $translated_entity = $node->addTranslation('nl', $values);
     $translated_entity->save();
