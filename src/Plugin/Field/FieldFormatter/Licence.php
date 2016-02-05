@@ -24,7 +24,6 @@ use Drupal\Core\Url;
  */
 class Licence extends EntityReferenceLabelFormatter {
 
-
   /**
    * {@inheritdoc}
    */
@@ -34,10 +33,10 @@ class Licence extends EntityReferenceLabelFormatter {
     foreach ($elements as $delta => &$element) {
       $url = Url::fromUserInput('/node/16');
       $element['#url'] = $url;
+      unset($element['#options']['language']);
     }
 
     return $elements;
   }
-
 
 }
