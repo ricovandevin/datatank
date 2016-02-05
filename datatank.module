@@ -172,8 +172,7 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   $dataset = $variables['elements']['#datatank_dataset'];
   $variables['is_download_page'] = $dataset->__get('download') ? TRUE : FALSE;
 
-  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)
-    ->getValue()['target_id']);
+  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)->getValue()['target_id']);
   if ($type && $type->getName() == 'wfs') {
     $variables['wfs'] = TRUE;
   }
@@ -181,16 +180,17 @@ function datatank_preprocess_datatank_dataset(&$variables) {
     $variables['wfs'] = FALSE;
   }
 
-  // DATE
-  $formats = datatank_available_formats();
-  $format_labels = [];
-  foreach ($formats as $format) {
-    $format_labels[] = $format['label'];
-  }
-  $variables['formats'] = implode(' | ', $format_labels);
-
   $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
   $variables['downloadtab'] = $url;
+
+    // Classes
+  $dataset_type = taxonomy_term_load($dataset->field_dataset_dataset_type->get(0)->getValue('target_id')['target_id']);
+  $classes = [];
+  if($dataset_type) {
+    $classes[] = Html::cleanCssIdentifier(strtolower($dataset_type->getName()));
+  }
+
+  $variables['classes'] = implode(' ', $classes);
 
   // Webforms
   $url = Url::fromUserInput('/node/1');
@@ -203,6 +203,13 @@ function datatank_preprocess_datatank_dataset(&$variables) {
 
 
   if (!$variables['wfs']) {
+    $formats = datatank_available_formats();
+    $format_labels = [];
+    foreach ($formats as $format) {
+      $format_labels[] = $format['label'];
+    }
+    $variables['formats'] = implode(' | ', $format_labels);
+
     // For the demo url let's use the first 2 parameters
     $query = [];
     for ($i = 0; $i < 2; $i++) {
@@ -313,7 +320,10 @@ function datatank_node_insert($node) {
 function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   $config = \Drupal::config('datatank.settings');
 
-  if (in_array($form_id, ['contact_message_feedback_form', 'contact_message_feedback_short_form'])) {
+  if (in_array($form_id, [
+    'contact_message_feedback_form',
+    'contact_message_feedback_short_form'
+  ])) {
     // Add a subscribe to newsletter checkbox to some forms.
     $form['subscribe'] = array(
       '#type' => 'checkbox',

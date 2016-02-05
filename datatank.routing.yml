@@ -13,7 +13,7 @@ entity.datatank_column.collection:
     _entity_list: 'datatank_column'
     _title: 'Datatank: Columns'
   requirements:
-    _permission: 'view datatank_column entity'
+    _entity_create_access: 'datatank_column'
 
 datatank.column_add:
   path: '/admin/content/datatank/column/add'
@@ -62,7 +62,7 @@ entity.datatank_parameter.collection:
     _entity_list: 'datatank_parameter'
     _title: 'Datatank: Parameter'
   requirements:
-    _permission: 'view datatank_parameter entity'
+    _entity_create_access: 'datatank_parameter'
 
 datatank.parameter_add:
   path: '/admin/content/datatank/parameter/add'
@@ -110,7 +110,7 @@ entity.datatank_dataset.download:
   defaults:
     _form: '\Drupal\datatank\Form\DatasetDownload'
     _entity_view: 'datatank_dataset'
-    _title: 'Dataset download'
+    _title_callback: '\Drupal\datatank\Form\DatasetDownload::title'
   requirements:
     _entity_access: 'datatank_dataset.view'
 
@@ -136,7 +136,7 @@ entity.datatank_dataset.collection:
     _entity_list: 'datatank_dataset'
     _title: 'Datatank: dataset'
   requirements:
-    _permission: 'administer datatank_dataset entity'
+    _entity_create_access: 'datatank_dataset'
 
 datatank.dataset_add:
   path: '/admin/content/datatank/dataset/add'
@@ -194,4 +194,12 @@ datatank.subscription_form:
     _form: '\Drupal\datatank\Form\SubscriptionForm'
     _title: 'Newsletter'
   requirements:
-    _permission: 'view published content'
+    _permission: 'access content'
+    
+datatank.app_form:
+  path: '/app/submit'
+  defaults:
+    _form: '\Drupal\datatank\Form\AppForm'
+    _title_callback: '\Drupal\datatank\Form\AppForm::title'
+  requirements:
+    _permission: 'access content'

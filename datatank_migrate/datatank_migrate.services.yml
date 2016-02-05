@@ -1,5 +1,5 @@
 services:
-  donkeymedia_migrate.donkeymedia_migrate_post_save:
+  datatabj.datatank_migrate_post_save:
     class: Drupal\datatank_migrate\EventSubscriber\DatatankMigratePostSave
     tags:
       - { name: event_subscriber }

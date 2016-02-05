@@ -20,6 +20,7 @@ process:
   field_dataset_title: title
   field_dataset_publisher_name:  publisher_name
   field_dataset_language: language
+  field_dataset_extra_link: extra_links
   created: issued
   changed: modified
   parameter_pid:
