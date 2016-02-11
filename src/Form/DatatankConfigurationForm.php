@@ -88,6 +88,14 @@ class DatatankConfigurationForm extends ConfigFormBase {
       '#default_value' => isset($feedback_intro['value']) ? $feedback_intro['value'] : '',
     );
 
+    $feedback_intro = $config->get('feedback_block_intro');
+    $form['feedback_block_intro'] = array(
+      '#type' => 'text_format',
+      '#title' => $this->t('Introduction text for feedback form on the download confirmation page'),
+      '#format' => isset($feedback_intro['format']) ? $feedback_intro['format'] : 'html',
+      '#default_value' => isset($feedback_intro['value']) ? $feedback_intro['value'] : '',
+    );
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -126,6 +134,10 @@ class DatatankConfigurationForm extends ConfigFormBase {
 
     \Drupal::configFactory()->getEditable('datatank.settings')
       ->set('feedback_intro', $form_state->getValue('feedback_intro'))
+      ->save();
+
+    \Drupal::configFactory()->getEditable('datatank.settings')
+      ->set('feedback_block_intro', $form_state->getValue('feedback_block_intro'))
       ->save();
 
 
