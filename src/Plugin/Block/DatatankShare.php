@@ -20,7 +20,6 @@ use Drupal\Core\Url;
  */
 class DatatankShare extends BlockBase {
 
-
   /**
    * {@inheritdoc}
    */
@@ -60,8 +59,7 @@ class DatatankShare extends BlockBase {
 
 
     $build['#cache'] = array(
-      //'contexts' => array('url'),
-      'max-age' => 0,
+      'contexts' => array('url'),
     );
     return $build;
   }
