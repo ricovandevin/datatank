@@ -228,8 +228,10 @@ function datatank_preprocess_datatank_dataset(&$variables) {
 
       // URL
       $url = Url::fromUri($config->getEndpoint() . $dataset->getName());
-      $external_link = \Drupal::l($config->getEndpoint() . $dataset->getName(), $url);
-      $variables['url'] = $external_link;
+      /*$external_link = \Drupal::l($config->getEndpoint() . $dataset->getName(), $url);
+      $variables['url'] = $external_link;*/
+
+      $variables['url'] = $url;
 
       // Parameter url
       $query['limit'] = 1;
