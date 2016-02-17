@@ -197,7 +197,7 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   $external_link = \Drupal::l(t('Report a problem with this dataset'), $url);
   $variables['problem_webform'] = $external_link;
 
-  $url = Url::fromUserInput('/node/1');
+  $url = Url::fromUserInput('/contact/feedback');
   $external_link = \Drupal::l(t('Help improve our dataset.'), $url);
   $variables['help_dataset'] = $external_link;
 
