@@ -168,6 +168,13 @@ class DatasetDownload extends FormBase {
       ];
     }
 
+    // Language
+    $form['filter']['langcode'] = [
+      '#title' => $this->t('Choose a language'),
+      '#type' => 'select',
+      '#options' => datatank_available_languages(),
+    ];
+
     // laatste wijziging
     $form['filter']['timestamp'] = [
       '#type' => 'date',
@@ -183,23 +190,23 @@ class DatasetDownload extends FormBase {
     ];
 
 
-    $form['language'] = [
+    /* $form['language'] = [
       '#type' => 'container',
       '#attributes' => [
-        'class' => ['dataset-download__language']
+      'class' => ['dataset-download__language']
       ]
-    ];
+      ];
 
-    $form['language']['langcode'] = [
+      $form['language']['langcode'] = [
       '#title' => $this->t('Choose a language'),
       '#type' => 'select',
       '#options' => datatank_available_languages(),
-    ];
+      ];
 
-    $form['language']['submit'] = [
+      $form['language']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Apply')
-    ];
+      ]; */
 
     // RESULTAAT RECHTS
     $config = new DrupalConfig();
@@ -218,7 +225,7 @@ class DatasetDownload extends FormBase {
           $term = \Drupal::entityManager()
             ->getStorage('taxonomy_term')
             ->load($form_state->getValue('region'));
-          $query['region'] = $term->get('name')->value;
+          $query['region'] = $term->get('field_region_id')->value;
         }
         break;
 
@@ -244,7 +251,6 @@ class DatasetDownload extends FormBase {
     }
 
     $query['lang'] = $form_state->getValue('langcode');
-
     // Result
     $data_url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . '.json', ['query' => $query]);
     $result = $client->get($data_url->toString());
