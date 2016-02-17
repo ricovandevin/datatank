@@ -1,0 +1,6 @@
+checkboxWidget:
+  version: 1.x
+  js:
+    js/checkboxWidget.js: {}
+  dependencies:
+    - core/jquery
