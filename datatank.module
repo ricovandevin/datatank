@@ -291,18 +291,18 @@ function datatank_available_formats() {
  */
 function datatank_available_languages() {
   return [
-    'de' => $this->t('DE'),
-    'da' => $this->t('DA'),
-    'it' => $this->t('IT'),
-    'nl' => $this->t('NL'),
-    'zh' => $this->t('ZH'),
-    'en' => $this->t('EN'),
-    'fr' => $this->t('FR'),
-    'pt' => $this->t('PT'),
-    'rv' => $this->t('RV'),
-    'ja' => $this->t('JA'),
-    'es' => $this->t('ES'),
-    'sv' => $this->t('SV')
+    'de' => t('DE'),
+    'da' => t('DA'),
+    'it' => t('IT'),
+    'nl' => t('NL'),
+    'zh' => t('ZH'),
+    'en' => t('EN'),
+    'fr' => t('FR'),
+    'pt' => t('PT'),
+    'rv' => t('RV'),
+    'ja' => t('JA'),
+    'es' => t('ES'),
+    'sv' => t('SV')
   ];
 }
 
