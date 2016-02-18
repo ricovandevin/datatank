@@ -23,7 +23,7 @@ function datatank_migrate_drush_command() {
  */
 function drush_datatank_migrate_datatank_generate_url() {
   $datasets = entity_load_multiple('datatank_dataset');
-  $languages = ['ln', 'en'];
+  $languages = ['nl', 'en'];
 
   $table = [];
   $table[] = ['Original path', 'alias'];
