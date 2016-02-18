@@ -33,30 +33,63 @@ class AppForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['title_nl'] = [
+    $form['personal'] = [
+      '#markup' => '<h2>' . $this->t('Personal information') . '</h2>'
+    ];
+
+    $form['name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Title Dutch'),
+      '#title' => $this->t('Name'),
       '#required' => TRUE,
+    ];
+
+    $form['organisation'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Organisation'),
+      '#required' => TRUE,
+    ];
+
+    $form['email'] = [
+      '#type' => 'email',
+      '#title' => $this->t('Email'),
+      '#required' => TRUE,
+    ];
+
+    $form['english'] = [
+      '#markup' => '<h2>' . $this->t('English information') . '</h2>'
     ];
 
     $form['title_en'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Title English'),
-      '#required' => TRUE,
-    ];
-
-    $form['description_nl'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Description Dutch'),
+      '#title' => $this->t('English title of your Application.'),
       '#required' => TRUE,
     ];
 
     $form['description_en'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Description English'),
+      '#title' => $this->t('English description of your Application.'),
       '#required' => TRUE,
     ];
 
+    $form['dutch'] = [
+      '#markup' => '<h2>' . $this->t('Dutch information') . '</h2>'
+    ];
+
+    $form['title_nl'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Dutch title of your Application.'),
+      '#required' => TRUE,
+    ];
+
+    $form['description_nl'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Dutch description of your Application.'),
+      '#required' => TRUE,
+    ];
+
+    $form['app'] = [
+      '#markup' => '<h2>' . $this->t('Application details') . '</h2>'
+    ];
 
     $types_raw = \Drupal::entityManager()
       ->getStorage('taxonomy_term')
@@ -70,24 +103,6 @@ class AppForm extends FormBase {
       '#type' => 'checkboxes',
       '#options' => $types,
       '#title' => $this->t('Type'),
-      '#required' => TRUE,
-    ];
-
-    $form['organisation'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Organisation'),
-      '#required' => TRUE,
-    ];
-
-    $form['name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Name'),
-      '#required' => TRUE,
-    ];
-
-    $form['email'] = [
-      '#type' => 'email',
-      '#title' => $this->t('Email'),
       '#required' => TRUE,
     ];
 
