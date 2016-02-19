@@ -273,10 +273,10 @@ function datatank_available_formats() {
       'label' => 'XML',
       'extensie' => '.xml',
     ],
-    /*'CSV' => [
+    'CSV' => [
       'label' => 'CSV',
       'extensie' => '.csv',
-    ],*/
+    ],
     'PHP' => [
       'label' => 'PHP',
       'extensie' => '.php',
