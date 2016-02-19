@@ -51,7 +51,7 @@ class AppForm extends FormBase {
 
     $form['email'] = [
       '#type' => 'email',
-      '#title' => $this->t('Email'),
+      '#title' => $this->t('E-mail'),
       '#required' => TRUE,
     ];
 
@@ -61,13 +61,13 @@ class AppForm extends FormBase {
 
     $form['title_en'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('English title of your Application.'),
+      '#title' => $this->t('English title of the application.'),
       '#required' => TRUE,
     ];
 
     $form['description_en'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('English description of your Application.'),
+      '#title' => $this->t('English description of the application.'),
       '#required' => TRUE,
     ];
 
@@ -77,13 +77,13 @@ class AppForm extends FormBase {
 
     $form['title_nl'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Dutch title of your Application.'),
+      '#title' => $this->t('Dutch title of the application.'),
       '#required' => TRUE,
     ];
 
     $form['description_nl'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Dutch description of your Application.'),
+      '#title' => $this->t('Dutch description of the application.'),
       '#required' => TRUE,
     ];
 
