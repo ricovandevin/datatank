@@ -23,7 +23,6 @@ class ParameterForm extends ContentEntityForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    dsm($form['langcode']);
     return $form;
   }
 
@@ -35,6 +34,7 @@ class ParameterForm extends ContentEntityForm {
     $entity = $this->getEntity();
     $entity->save();
   }
+
 }
 
 ?>

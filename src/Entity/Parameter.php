@@ -207,8 +207,8 @@ class Parameter extends ContentEntityBase implements ParameterInterface {
         'type' => 'hidden',
       ))
       ->setDisplayOptions('form', array(
-        'type' => 'hidden',
-      ));
+      'type' => 'hidden',
+    ));
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
@@ -285,6 +285,7 @@ class Parameter extends ContentEntityBase implements ParameterInterface {
     $this->set('user_id', $account->id());
     return $this;
   }
+
 }
 
 ?>

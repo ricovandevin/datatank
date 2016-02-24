@@ -172,8 +172,7 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   $dataset = $variables['elements']['#datatank_dataset'];
   $variables['is_download_page'] = $dataset->__get('download') ? TRUE : FALSE;
 
-  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)
-    ->getValue()['target_id']);
+  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)->getValue()['target_id']);
   if ($type && $type->getName() == 'wfs') {
     $variables['wfs'] = TRUE;
   }
@@ -181,28 +180,36 @@ function datatank_preprocess_datatank_dataset(&$variables) {
     $variables['wfs'] = FALSE;
   }
 
-  // DATE
-  $formats = datatank_available_formats();
-  $format_labels = [];
-  foreach ($formats as $format) {
-    $format_labels[] = $format['label'];
-  }
-  $variables['formats'] = implode(' | ', $format_labels);
-
   $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
   $variables['downloadtab'] = $url;
 
+    // Classes
+  $dataset_type = taxonomy_term_load($dataset->field_dataset_dataset_type->get(0)->getValue('target_id')['target_id']);
+  $classes = [];
+  if($dataset_type) {
+    $classes[] = Html::cleanCssIdentifier(strtolower($dataset_type->getName()));
+  }
+
+  $variables['classes'] = implode(' ', $classes);
+
   // Webforms
-  $url = Url::fromUserInput('/node/1');
+  $url = Url::fromUserInput('/contact/contact?dataset=' . $dataset->getName());
   $external_link = \Drupal::l(t('Report a problem with this dataset'), $url);
   $variables['problem_webform'] = $external_link;
 
-  $url = Url::fromUserInput('/node/1');
+  $url = Url::fromUserInput('/contact/feedback');
   $external_link = \Drupal::l(t('Help improve our dataset.'), $url);
   $variables['help_dataset'] = $external_link;
 
 
   if (!$variables['wfs']) {
+    $formats = datatank_available_formats();
+    $format_labels = [];
+    foreach ($formats as $format) {
+      $format_labels[] = $format['label'];
+    }
+    $variables['formats'] = implode(' | ', $format_labels);
+
     // For the demo url let's use the first 2 parameters
     $query = [];
     for ($i = 0; $i < 2; $i++) {
@@ -221,8 +228,10 @@ function datatank_preprocess_datatank_dataset(&$variables) {
 
       // URL
       $url = Url::fromUri($config->getEndpoint() . $dataset->getName());
-      $external_link = \Drupal::l($config->getEndpoint() . $dataset->getName(), $url);
-      $variables['url'] = $external_link;
+      /*$external_link = \Drupal::l($config->getEndpoint() . $dataset->getName(), $url);
+      $variables['url'] = $external_link;*/
+
+      $variables['url'] = $url;
 
       // Parameter url
       $query['limit'] = 1;
@@ -282,18 +291,18 @@ function datatank_available_formats() {
  */
 function datatank_available_languages() {
   return [
-    'NL' => t('NL'),
-    'FR' => t('FR'),
-    'EN' => t('EN'),
-    'DE' => t('DE'),
-    'SP' => t('SP'),
-    'IT' => t('IT'),
-    'PT' => t('PT'),
-    'RU' => t('RU'),
-    'JP' => t('JP'),
-    'ZH' => t('ZH'),
-    'DA' => t('DA'),
-    'SE' => t('SE')
+    'de' => t('DE'),
+    'da' => t('DA'),
+    'it' => t('IT'),
+    'nl' => t('NL'),
+    'zh' => t('ZH'),
+    'en' => t('EN'),
+    'fr' => t('FR'),
+    'pt' => t('PT'),
+    'rv' => t('RV'),
+    'ja' => t('JA'),
+    'es' => t('ES'),
+    'sv' => t('SV')
   ];
 }
 
@@ -311,23 +320,56 @@ function datatank_node_insert($node) {
  * Implements hook_form_alter().
  */
 function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if (in_array($form_id, ['contact_message_feedback_form', 'contact_message_feedback_short_form'])) {
+  $config = \Drupal::config('datatank.settings');
+
+  if (in_array($form_id, [
+    'contact_message_feedback_form',
+    'contact_message_feedback_short_form'
+  ])) {
+    // Add a subscribe to newsletter checkbox to some forms.
     $form['subscribe'] = array(
       '#type' => 'checkbox',
       '#title' => t('I would like to subscribe to the newsletter too'),
       '#default_value' => FALSE,
       '#weight' => 998,
     );
-
     $form['actions']['#weight'] = 999;
 
     $form['#submit'][] = 'datatank_subscribe_form_submit';
+
+    // Hide preview button.
+    $form['actions']['preview']['#access'] = FALSE;
+
+    // Form specific texts and labels.
+    switch ($form_id) {
+      case 'contact_message_feedback_form':
+        $feedback_intro = $config->get('feedback_intro');
+        $form['#prefix'] = check_markup($feedback_intro['value'], $feedback_intro['format']);
+
+        $form['actions']['submit']['#value'] = t('Submit');
+
+        $form['field_feedback_dataset']['widget']['add_more']['#value'] = t('Add another dataset');
+        break;
+      case 'contact_message_feedback_short_form':
+        $feedback_block_intro = $config->get('feedback_block_intro');
+        $form['#prefix'] = check_markup($feedback_block_intro['value'], $feedback_block_intro['format']);
+
+        $form['actions']['submit']['#value'] = t('Subscribe');
+        break;
+      default:
+        break;
+    }
   }
 
   // Add a placeholder to views exposed filter and change submit button text.
   if ($form_id == 'views_exposed_form' && $form['#id'] == 'views-exposed-form-search-page-1') {
     $form['search_api_fulltext']['#placeholder'] = t('Type one or more keywords');
     $form['actions']['submit']['#value'] = t('Search');
+  }
+
+  if(isset($_GET['dataset']) && $_GET['dataset'] != '' && $form_id == 'contact_message_contact_form') {
+    $form['message']['widget'][0]['value']['#default_value'] = t('I have problems with dataset: @dataset', array('@dataset' => $_GET['dataset']));
+    $form['field_contact_subject']['widget']['#default_value'] =  2;
   }
 }
 

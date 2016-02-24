@@ -200,8 +200,8 @@ class Dataset extends ContentEntityBase implements DatasetInterface {
         'type' => 'hidden',
       ))
       ->setDisplayOptions('form', array(
-        'type' => 'hidden',
-      ));
+      'type' => 'hidden',
+    ));
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Issued on'))
@@ -308,6 +308,20 @@ class Dataset extends ContentEntityBase implements DatasetInterface {
    */
   public function getName() {
     return $this->get('name')->value;
+  }
+
+  /**
+   * When datatset only has 2 parameters Limit and Offset filtering is not allowed
+   */
+  public function canBeFiltered() {
+    if ($this->get('parameter_pid')->count() == 2 && $this->get('parameter_pid')->get(0)) {
+      $p1 = entity_load('datatank_parameter', $this->get('parameter_pid')->get(0)->target_id);
+      $p2 = entity_load('datatank_parameter', $this->get('parameter_pid')->get(1)->target_id);
+      if ($p1->get('name')->value == 'limit' && $p2->get('name')->value == 'offset') {
+        return FALSE;
+      }
+    }
+    return TRUE;
   }
 
 }

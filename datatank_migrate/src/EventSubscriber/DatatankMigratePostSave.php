@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Migrate post row save event subscriber and handler.
  */
@@ -39,6 +40,10 @@ class DatatankMigratePostSave implements EventSubscriberInterface {
           'documentation' => [
             'type' => 'text',
             'key' => 'documentation_nl'
+          ],
+          'default_value' => [
+            'type' => 'text',
+            'key' => 'default_value'
           ],
         ]
       ],

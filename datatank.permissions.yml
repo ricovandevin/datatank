@@ -1,0 +1,14 @@
+administer datatank_Dataset entity:
+  title: 'Administer datatank Dataset entity'
+  description: 'Administer the datatank dataset entity'
+  restrict access: false
+
+administer datatank_column entity:
+  title: 'Administer datatank Column entity'
+  description: 'Administer the datatank Column entity'
+  restrict access: false
+
+administer datatank_parameter entity:
+  title: 'Administer datatank Parameter entity'
+  description: 'Administer the datatank Parameter entity'
+  restrict access: false
