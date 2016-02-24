@@ -173,6 +173,7 @@ class DatasetDownload extends FormBase {
       '#title' => $this->t('Choose a language'),
       '#type' => 'select',
       '#options' => datatank_available_languages(),
+      '#default_value' => 'nl',
     ];
 
     // laatste wijziging
