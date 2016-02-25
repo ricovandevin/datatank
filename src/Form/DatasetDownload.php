@@ -12,6 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\tdt_client\Client;
 use Drupal\tdt_client\Config\DrupalConfig;
 use Drupal\Core\Url;
+use Drupal\datatank\Entity\Parameter;
 
 /**
  * Class DatasetDownload.
@@ -166,14 +167,40 @@ class DatasetDownload extends FormBase {
           'accessibility' => $this->t('Accessibility'),
         ]
       ];
+
+      // Load accessibility parameter
+      $accessibility = Parameter::loadByName('accessibility');
+      $accessibility_select = [];
+      foreach ($accessibility->get('field_parameter_values')->getValue() as $val) {
+        $raw = explode('|', $val['value']);
+        $accessibility_select[$raw[0]] = $raw[1];
+      }
+
+      $form['filter']['accessibility'] = [
+        '#type' => "select",
+        '#title' => $this->t('Accessibility'),
+        '#options' => $accessibility_select,
+        '#states' => array(
+          'visible' => array(
+            ':input[name="labels[accessibility]"]' => array('checked' => TRUE),
+          ),
+          'required' => array(
+            ':input[name="labels[accessibility]"]' => array('checked' => TRUE),
+          ),
+        ),
+      ];
     }
 
     // Language
+    // Needed for Select 2 empty option
+    $languages = ['' => '', 0 => t('No language')];
+    $languages = array_merge($languages, datatank_available_languages());
+
     $form['filter']['langcode'] = [
       '#title' => $this->t('Choose a language'),
       '#type' => 'select',
-      '#options' => datatank_available_languages(),
-      '#default_value' => 'nl',
+      '#options' => $languages,
+      '#default_value' => 0,
     ];
 
     // laatste wijziging
@@ -189,25 +216,6 @@ class DatasetDownload extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('Filter'),
     ];
-
-
-    /* $form['language'] = [
-      '#type' => 'container',
-      '#attributes' => [
-      'class' => ['dataset-download__language']
-      ]
-      ];
-
-      $form['language']['langcode'] = [
-      '#title' => $this->t('Choose a language'),
-      '#type' => 'select',
-      '#options' => datatank_available_languages(),
-      ];
-
-      $form['language']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Apply')
-      ]; */
 
     // RESULTAAT RECHTS
     $config = new DrupalConfig();
@@ -251,7 +259,10 @@ class DatasetDownload extends FormBase {
       }
     }
 
-    $query['lang'] = $form_state->getValue('langcode');
+    if ($form_state->hasValue('langcode') && $form_state->getValue('langcode')) {
+      $query['lang'] = $form_state->getValue('langcode');
+    }
+
     // Result
     $data_url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . '.json', ['query' => $query]);
     $result = $client->get($data_url->toString());

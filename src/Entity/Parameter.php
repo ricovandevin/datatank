@@ -36,6 +36,7 @@ use Drupal\user\UserInterface;
  *     "access" = "Drupal\datatank\ParameterAccessControlHandler",
  *   },
  *   base_table = "datatank_parameter",
+ *   data_table = "datatank_parameter_field_data",
  *   admin_permission = "administer datatank_parameter entity",
  *   translatable = TRUE,
  *   entity_keys = {
@@ -284,6 +285,21 @@ class Parameter extends ContentEntityBase implements ParameterInterface {
   public function setOwner(UserInterface $account) {
     $this->set('user_id', $account->id());
     return $this;
+  }
+
+  /**
+   * Load parameter by name.
+   * @param type $name
+   */
+  public static function loadByName($name) {
+    $storage = \Drupal::entityManager()->getStorage('datatank_parameter');
+    $query = \Drupal::entityQuery('datatank_parameter');
+    $query->condition('name.value', $name);
+    $query->condition('langcode.value', 'nl');
+    $id = $query->execute();
+
+    $entity = $storage->loadMultiple($id);
+    return array_values($entity)[0];
   }
 
 }
