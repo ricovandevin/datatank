@@ -163,7 +163,7 @@ class DatasetDownload extends FormBase {
         '#title' => $this->t('Labels'),
         '#options' => [
           'bicycle_friendly' => $this->t('Bicycle friendly'),
-          'green_key' => $this->t('Green'),
+          'green_key' => $this->t('Green key'),
           'accessibility' => $this->t('Accessibility'),
         ]
       ];
