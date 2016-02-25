@@ -40,19 +40,19 @@ class DatasetDownload extends FormBase {
     ];
 
 
-    // FILTER
-    $form['filter'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => ['dataset-download__filters']
-      ]
-    ];
-
-    $form['filter']['title'] = [
-      '#markup' => '<h2>' . $this->t('Filter data') . '</h2>',
-    ];
-
     if ($datatank_dataset->canBeFiltered()) {
+      // FILTER
+      $form['filter'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['dataset-download__filters']
+        ]
+      ];
+
+      $form['filter']['title'] = [
+        '#markup' => '<h2>' . $this->t('Filter data') . '</h2>',
+      ];
+
       $form['filter']['location'] = [
         '#type' => 'radios',
         '#title' => $this->t('Location'),
@@ -189,33 +189,33 @@ class DatasetDownload extends FormBase {
           ),
         ),
       ];
+
+      // Language
+      // Needed for Select 2 empty option
+      $languages = ['' => '', 0 => t('No language')];
+      $languages = array_merge($languages, datatank_available_languages());
+
+      $form['filter']['langcode'] = [
+        '#title' => $this->t('Choose a language'),
+        '#type' => 'select',
+        '#options' => $languages,
+        '#default_value' => 0,
+      ];
+
+      // laatste wijziging
+      $form['filter']['timestamp'] = [
+        '#type' => 'date',
+        '#title' => $this->t('Last changed'),
+        '#description' => $this->t('Format: @date', array('@date' => format_date(time(), 'custom', 'Y-m-d'))),
+        //'#default_value' => array('year' => 2010, 'month' => 2, 'day' => 12),
+        '#default_value' => '',
+      ];
+
+      $form['filter']['submit'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Filter'),
+      ];
     }
-
-    // Language
-    // Needed for Select 2 empty option
-    $languages = ['' => '', 0 => t('No language')];
-    $languages = array_merge($languages, datatank_available_languages());
-
-    $form['filter']['langcode'] = [
-      '#title' => $this->t('Choose a language'),
-      '#type' => 'select',
-      '#options' => $languages,
-      '#default_value' => 0,
-    ];
-
-    // laatste wijziging
-    $form['filter']['timestamp'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Last changed'),
-      '#description' => $this->t('Format: @date', array('@date' => format_date(time(), 'custom', 'Y-m-d'))),
-      //'#default_value' => array('year' => 2010, 'month' => 2, 'day' => 12),
-      '#default_value' => '',
-    ];
-
-    $form['filter']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Filter'),
-    ];
 
     // RESULTAAT RECHTS
     $config = new DrupalConfig();
@@ -282,7 +282,7 @@ class DatasetDownload extends FormBase {
       '#markup' => '<div class="dataset-download__result-label">' . $this->t('Download as:') . '</div>',
     ];
 
-    $formats = datatank_available_formats();
+    $formats = datatank_available_formats($datatank_dataset);
     foreach ($formats as $key => $format) {
       $data_url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extensie'], ['query' => $query]);
       $url = Url::fromRoute('datatank.dataset_download_confirm_index', [], ['query' => ['download_url' => $data_url->toString()]]);

@@ -311,17 +311,16 @@ class Dataset extends ContentEntityBase implements DatasetInterface {
   }
 
   /**
-   * When datatset only has 2 parameters Limit and Offset filtering is not allowed
+   * Only these formats can be filtered.
    */
   public function canBeFiltered() {
-    if ($this->get('parameter_pid')->count() == 2 && $this->get('parameter_pid')->get(0)) {
-      $p1 = entity_load('datatank_parameter', $this->get('parameter_pid')->get(0)->target_id);
-      $p2 = entity_load('datatank_parameter', $this->get('parameter_pid')->get(1)->target_id);
-      if ($p1->get('name')->value == 'limit' && $p2->get('name')->value == 'offset') {
-        return FALSE;
-      }
+    $type = taxonomy_term_load($this->field_dataset_type->get(0)->getValue()['target_id']);
+    $allowed_types = ['intertourist', 'productcategory', 'installed'];
+
+    if (in_array(strtolower($type->getName()), $allowed_types)) {
+      return TRUE;
     }
-    return TRUE;
+    return FALSE;
   }
 
 }

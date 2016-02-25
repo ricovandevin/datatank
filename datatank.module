@@ -172,6 +172,7 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   $dataset = $variables['elements']['#datatank_dataset'];
   $variables['is_download_page'] = $dataset->__get('download') ? TRUE : FALSE;
 
+  // WFS has less features on detail page
   $type = taxonomy_term_load($dataset->field_dataset_type->get(0)->getValue()['target_id']);
   if ($type && $type->getName() == 'wfs') {
     $variables['wfs'] = TRUE;
@@ -180,6 +181,7 @@ function datatank_preprocess_datatank_dataset(&$variables) {
     $variables['wfs'] = FALSE;
   }
 
+  // Url download tab
   $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
   $variables['downloadtab'] = $url;
 
@@ -203,7 +205,7 @@ function datatank_preprocess_datatank_dataset(&$variables) {
 
 
   if (!$variables['wfs']) {
-    $formats = datatank_available_formats();
+    $formats = datatank_available_formats($dataset);
     $format_labels = [];
     foreach ($formats as $format) {
       $format_labels[] = $format['label'];
@@ -261,27 +263,19 @@ function datatank_theme_suggestions_datatank_dataset($variables) {
 }
 
 /**
- * returns the availible formats in datatank api.
+ * Returns the availible formats in datatank api.
  */
-function datatank_available_formats() {
-  $formats = [
-    'json' => [
-      'label' => 'JSON',
-      'extensie' => '.json',
-    ],
-    'XML' => [
-      'label' => 'XML',
-      'extensie' => '.xml',
-    ],
-    'CSV' => [
-      'label' => 'CSV',
-      'extensie' => '.csv',
-    ],
-    'PHP' => [
-      'label' => 'PHP',
-      'extensie' => '.php',
-    ],
-  ];
+function datatank_available_formats($dataset) {
+  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)->getValue()['target_id']);
+
+  $formats = [];
+  foreach($type->field_distribution_format->getValue() as $value) {
+    $format = taxonomy_term_load($value['target_id']);
+    $formats[strtolower($format->getName())] = [
+      'label' => $format->getName(),
+      'extensie' => '.' . strtolower($format->getName()),
+    ];
+  }
 
   return $formats;
 }
