@@ -77,33 +77,33 @@ class DatatankMigratePostSave implements EventSubscriberInterface {
 
       // Get multilingual fields in all languages.
       foreach ($available_languages as $lang) {
-        if (!$entity->hasTranslation($lang)) {
-          // Only add new translations, do not remove or update translations because of overwriting translation data.
-          $values = [];
+        //if (!$entity->hasTranslation($lang)) {
+        // Only add new translations, do not remove or update translations because of overwriting translation data.
+        $values = [];
 
-          foreach ($translatable_field['fields'] as $key => $value) {
-            if (isset($migrate_src_values[$value['key']]) || isset($migrate_src_values['dataset']->getFields()[$value['key']])) {
+        foreach ($translatable_field['fields'] as $key => $value) {
+          if (isset($migrate_src_values[$value['key']]) || isset($migrate_src_values['dataset']->getFields()[$value['key']])) {
 
-              switch ($value['type']) {
-                case "text" :
-                default:
-                  $values[$key] = $migrate_src_values[$value['key']];
-                  break;
+            switch ($value['type']) {
+              case "text" :
+              default:
+                $values[$key] = $migrate_src_values[$value['key']];
+                break;
 
-                case 'longtext':
-                  $values[$key]['value'] = isset($migrate_src_values[$value['key']]) ? $migrate_src_values[$value['key']] : $migrate_src_values['dataset']->getFields()[$value['key']]->getValue();
-                  break;
-              }
+              case 'longtext':
+                $values[$key]['value'] = isset($migrate_src_values[$value['key']]) ? $migrate_src_values[$value['key']] : $migrate_src_values['dataset']->getFields()[$value['key']]->getValue();
+                break;
             }
           }
-
-          /* if ($entity->hasTranslation($lang)) {
-            $entity->removeTranslation($lang);
-            } */
-
-          $translated_entity = $entity->addTranslation($lang, $values);
-          $translated_entity->save();
         }
+
+        if ($entity->hasTranslation($lang)) {
+          $entity->removeTranslation($lang);
+        }
+
+        $translated_entity = $entity->addTranslation($lang, $values);
+        $translated_entity->save();
+        //}
       }
 
       $map = $event->getMigration()->getIdMap();
