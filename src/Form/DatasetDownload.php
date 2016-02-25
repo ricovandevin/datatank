@@ -254,7 +254,11 @@ class DatasetDownload extends FormBase {
     if ($form_state->hasValue('labels')) {
       foreach ($form_state->getValue('labels') as $key => $val) {
         if ($val) {
-          $query[$key] = 1;
+          if ($key == 'accessibility') {
+            $query['accessibility'] = $form_state->getValue('accessibility');
+          } else {
+            $query[$key] = 1;
+          }
         }
       }
     }
