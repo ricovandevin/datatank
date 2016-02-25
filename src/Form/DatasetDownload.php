@@ -49,8 +49,11 @@ class DatasetDownload extends FormBase {
         ]
       ];
 
+      $config = \Drupal::configFactory()->getEditable('datatank.settings');
+      $url = Url::fromUserInput($config->get('datatank_link_info_filters'));
+      $external_link = '<span class="info-link">' . \Drupal::l('?', $url) . '</span>';
       $form['filter']['title'] = [
-        '#markup' => '<h2>' . $this->t('Filter data') . '</h2>',
+        '#markup' => '<h2>' . $this->t('Filter data') . '</h2>' . $external_link,
       ];
 
       $form['filter']['location'] = [
