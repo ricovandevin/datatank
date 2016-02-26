@@ -36,6 +36,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
  *     "views_data" = "Drupal\datatank\Entity\DatasetViewsData",
  *   },
  *   base_table = "datatank_dataset",
+ *   data_table = "datatank_dataset_field_data",
  *   admin_permission = "administer datatank_Dataset entity",
  *   fieldable = FALSE,
  *   translatable = TRUE,
