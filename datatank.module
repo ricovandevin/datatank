@@ -364,7 +364,7 @@ function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_
   }
 
   // Add some extra space below field_feedback_goal.
-  if (in_array($form_id, ['contact_message_feedback_form'])) {dpm($form, '$form');
+  if (in_array($form_id, ['contact_message_feedback_form'])) {
     $form['field_feedback_goal']['#suffix'] = '<div class="form-element-spacer">&nbsp;</div>';
   }
 }
