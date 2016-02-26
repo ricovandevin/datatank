@@ -3,22 +3,25 @@ datatank.settings:
  mapping:
    datatank_link_lambert72:
      type: label
-     label: "link to lambert72 page"
+     label: "Link to lambert 72 info page"
    datatank_link_info_filters:
      type: label
-     label: "link to info filters page"
+     label: "Link to info filters info page"
    newsletter_intro:
      type: text_format
-     label: "Newsletter info"
+     label: "Introduction text for newsletter subscription page"
    newsletter_success:
      type: text_format
-     label: "Newsletter Success"
+     label: "Success message for newsletter subscription"
    newsletter_error:
      type: text_format
-     label: "Newsletter error"
+     label: "Error message for newsletter subscription"
    feedback_intro:
      type: text_format
-     label: "Newsletter intro"
+     label: "Introduction text for the feedback page"
+   feedback_block_intro:
+     type: text_format
+     label: "Introduction text for feedback form on the download confirmation page"
    default_langcode:
      type: string
      label: 'Site default language code'
