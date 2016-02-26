@@ -316,8 +316,8 @@ function datatank_node_insert($node) {
 function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   $config = \Drupal::config('datatank.settings');
 
+  // Add a subscribe to newsletter checkbox to some forms.
   if (in_array($form_id, [])) {
-    // Add a subscribe to newsletter checkbox to some forms.
     $form['subscribe'] = array(
       '#type' => 'checkbox',
       '#title' => t('I would like to subscribe to the newsletter too'),
@@ -327,29 +327,34 @@ function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_
     $form['actions']['#weight'] = 999;
 
     $form['#submit'][] = 'datatank_subscribe_form_submit';
+  }
 
-    // Hide preview button.
+  // Hide preview button.
+  if (in_array($form_id, [
+    'contact_message_feedback_form',
+    'contact_message_feedback_short_form',
+  ])) {
     $form['actions']['preview']['#access'] = FALSE;
+  }
 
-    // Form specific texts and labels.
-    switch ($form_id) {
-      case 'contact_message_feedback_form':
-        $feedback_intro = $config->get('feedback_intro');
-        $form['#prefix'] = check_markup($feedback_intro['value'], $feedback_intro['format']);
+  // Form specific texts and labels.
+  switch ($form_id) {
+    case 'contact_message_feedback_form':
+      $feedback_intro = $config->get('feedback_intro');
+      $form['#prefix'] = check_markup($feedback_intro['value'], $feedback_intro['format']);
 
-        $form['actions']['submit']['#value'] = t('Submit');
+      $form['actions']['submit']['#value'] = t('Submit');
 
-        $form['field_feedback_dataset']['widget']['add_more']['#value'] = t('Add another dataset');
-        break;
-      case 'contact_message_feedback_short_form':
-        $feedback_block_intro = $config->get('feedback_block_intro');
-        $form['#prefix'] = check_markup($feedback_block_intro['value'], $feedback_block_intro['format']);
+      $form['field_feedback_dataset']['widget']['add_more']['#value'] = t('Add another dataset');
+      break;
+    case 'contact_message_feedback_short_form':
+      $feedback_block_intro = $config->get('feedback_block_intro');
+      $form['#prefix'] = check_markup($feedback_block_intro['value'], $feedback_block_intro['format']);
 
-        $form['actions']['submit']['#value'] = t('Subscribe');
-        break;
-      default:
-        break;
-    }
+      $form['actions']['submit']['#value'] = t('Subscribe');
+      break;
+    default:
+      break;
   }
 
   // Add a placeholder to views exposed filter and change submit button text.
