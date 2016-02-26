@@ -362,6 +362,11 @@ function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_
     $form['message']['widget'][0]['value']['#default_value'] = t('I have problems with dataset: @dataset', array('@dataset' => $_GET['dataset']));
     $form['field_contact_subject']['widget']['#default_value'] =  2;
   }
+
+  // Add some extra space below field_feedback_goal.
+  if (in_array($form_id, ['contact_message_feedback_form'])) {dpm($form, '$form');
+    $form['field_feedback_goal']['#suffix'] = '<div class="form-element-spacer">&nbsp;</div>';
+  }
 }
 
 /**
