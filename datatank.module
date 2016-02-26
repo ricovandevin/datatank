@@ -173,7 +173,8 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   $variables['is_download_page'] = $dataset->__get('download') ? TRUE : FALSE;
 
   // WFS has less features on detail page
-  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)->getValue()['target_id']);
+  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)
+    ->getValue()['target_id']);
   if ($type && $type->getName() == 'wfs') {
     $variables['wfs'] = TRUE;
   }
@@ -185,10 +186,11 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   $url = Url::fromRoute('entity.datatank_dataset.download', ['datatank_dataset' => $dataset->id()]);
   $variables['downloadtab'] = $url;
 
-    // Classes
-  $dataset_type = taxonomy_term_load($dataset->field_dataset_dataset_type->get(0)->getValue('target_id')['target_id']);
+  // Classes
+  $dataset_type = taxonomy_term_load($dataset->field_dataset_dataset_type->get(0)
+    ->getValue('target_id')['target_id']);
   $classes = [];
-  if($dataset_type) {
+  if ($dataset_type) {
     $classes[] = Html::cleanCssIdentifier(strtolower($dataset_type->getName()));
   }
 
@@ -266,15 +268,25 @@ function datatank_theme_suggestions_datatank_dataset($variables) {
  * Returns the availible formats in datatank api.
  */
 function datatank_available_formats($dataset) {
-  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)->getValue()['target_id']);
+  $type = taxonomy_term_load($dataset->field_dataset_type->get(0)
+    ->getValue()['target_id']);
 
   $formats = [];
-  foreach($type->field_distribution_format->getValue() as $value) {
+  foreach ($type->field_distribution_format->getValue() as $value) {
     $format = taxonomy_term_load($value['target_id']);
-    $formats[strtolower($format->getName())] = [
-      'label' => $format->getName(),
-      'extensie' => '.' . strtolower($format->getName()),
-    ];
+    if (strtolower($format->getName()) == 'map') {
+      $formats[strtolower($format->getName())] = [
+        'label' => $format->getName(),
+        'extensie' => '',
+      ];
+    }
+    else {
+      $formats[strtolower($format->getName())] = [
+        'label' => $format->getName(),
+        'extensie' => '.' . strtolower($format->getName()),
+      ];
+    }
+
   }
 
   return $formats;
@@ -363,9 +375,9 @@ function datatank_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_
     $form['actions']['submit']['#value'] = t('Search');
   }
 
-  if(isset($_GET['dataset']) && $_GET['dataset'] != '' && $form_id == 'contact_message_contact_form') {
+  if (isset($_GET['dataset']) && $_GET['dataset'] != '' && $form_id == 'contact_message_contact_form') {
     $form['message']['widget'][0]['value']['#default_value'] = t('I have problems with dataset: @dataset', array('@dataset' => $_GET['dataset']));
-    $form['field_contact_subject']['widget']['#default_value'] =  2;
+    $form['field_contact_subject']['widget']['#default_value'] = 2;
   }
 
   // Add some extra space below field_feedback_goal.

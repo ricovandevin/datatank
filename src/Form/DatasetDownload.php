@@ -174,7 +174,8 @@ class DatasetDownload extends FormBase {
       // Load accessibility parameter
       $accessibility = Parameter::loadByName('accessibility');
       $accessibility_select = [];
-      foreach ($accessibility->get('field_parameter_values')->getValue() as $val) {
+      foreach ($accessibility->get('field_parameter_values')
+                 ->getValue() as $val) {
         $raw = explode('|', $val['value']);
         $accessibility_select[$raw[0]] = $raw[1];
       }
@@ -259,7 +260,8 @@ class DatasetDownload extends FormBase {
         if ($val) {
           if ($key == 'accessibility') {
             $query['accessibility'] = $form_state->getValue('accessibility');
-          } else {
+          }
+          else {
             $query[$key] = 1;
           }
         }
@@ -291,8 +293,13 @@ class DatasetDownload extends FormBase {
 
     $formats = datatank_available_formats($datatank_dataset);
     foreach ($formats as $key => $format) {
-      $data_url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extensie'], ['query' => $query]);
-      $url = Url::fromRoute('datatank.dataset_download_confirm_index', [], ['query' => ['download_url' => $data_url->toString()]]);
+      if ($key == 'map') {
+        $url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extensie'], ['query' => $query]);
+      }
+      else {
+        $data_url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extensie'], ['query' => $query]);
+        $url = Url::fromRoute('datatank.dataset_download_confirm_index', [], ['query' => ['download_url' => $data_url->toString()]]);
+      }
 
       $form['result']['download'][$key] = [
         '#markup' => '<div class="button__download">' . \Drupal::l($format['label'], $url) . '</div>'
@@ -314,7 +321,8 @@ class DatasetDownload extends FormBase {
         if ($test_date != $timestamp) {
           $form_state->setErrorByName('timestamp', $this->t('Last changed is not in the right format.'));
         }
-      } else {
+      }
+      else {
         $form_state->setErrorByName('timestamp', $this->t('Last changed is not in the right format.'));
       }
     }
