@@ -25,70 +25,45 @@ class AppForm extends FormBase {
     return 'app_form';
   }
 
-  public function title() {
-    return $this->t('Submit app');
-  }
-
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['personal'] = [
-      '#markup' => '<h2>' . $this->t('Personal information') . '</h2>'
+    $form['app'] = [
+      '#markup' => '<h2>' . $this->t('Application details') . '</h2>'
     ];
 
-    $form['name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Name'),
-      '#required' => TRUE,
-    ];
-
-    $form['organisation'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Organisation'),
-      '#required' => TRUE,
-    ];
-
-    $form['email'] = [
-      '#type' => 'email',
-      '#title' => $this->t('E-mail'),
-      '#required' => TRUE,
-    ];
-
-    $form['english'] = [
-      '#markup' => '<h2>' . $this->t('English information') . '</h2>'
+    $form['titel'] = [
+      '#markup' => '<h3>' . $this->t('Title') . '</h3>'
     ];
 
     $form['title_en'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('English title of the application.'),
+      '#title' => $this->t('Title of the application. (English)'),
       '#required' => TRUE,
-    ];
-
-    $form['description_en'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('English description of the application.'),
-      '#required' => TRUE,
-    ];
-
-    $form['dutch'] = [
-      '#markup' => '<h2>' . $this->t('Dutch information') . '</h2>'
     ];
 
     $form['title_nl'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Dutch title of the application.'),
+      '#title' => $this->t('Title of the application. (Dutch)'),
       '#required' => TRUE,
     ];
+
+    $form['description'] = [
+      '#markup' => '<h3>' . $this->t('Description') . '</h3>'
+    ];
+
+    $form['description_en'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Description of the application. (English)'),
+      '#required' => TRUE,
+    ];
+
 
     $form['description_nl'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Dutch description of the application.'),
+      '#title' => $this->t('Description of the application. (Dutch)'),
       '#required' => TRUE,
-    ];
-
-    $form['app'] = [
-      '#markup' => '<h2>' . $this->t('Application details') . '</h2>'
     ];
 
     $types_raw = \Drupal::entityManager()
@@ -118,6 +93,28 @@ class AppForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    $form['personal'] = [
+      '#markup' => '<h2>' . $this->t('Personal information') . '</h2>'
+    ];
+
+    $form['name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Name'),
+      '#required' => TRUE,
+    ];
+
+    $form['organisation'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Organisation'),
+      '#required' => TRUE,
+    ];
+
+    $form['email'] = [
+      '#type' => 'email',
+      '#title' => $this->t('E-mail'),
+      '#required' => TRUE,
+    ];
+
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
@@ -131,17 +128,17 @@ class AppForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $node = Node::create(array(
-        'type' => 'app',
-        'title' => $form_state->getValue('title_en'),
-        'langcode' => 'en',
-        'uid' => '1',
-        'status' => 0,
-        'body' => $form_state->getValue('description_en'),
-        'field_app_email' => $form_state->getValue('email'),
-        'field_app_image' => $form_state->getValue('image'),
-        'field_app_name' => $form_state->getValue('name'),
-        'field_app_organisation' => $form_state->getValue('organisation'),
-        'field_app_type' => $form_state->getValue('type'),
+      'type' => 'app',
+      'title' => $form_state->getValue('title_en'),
+      'langcode' => 'en',
+      'uid' => '1',
+      'status' => 0,
+      'body' => $form_state->getValue('description_en'),
+      'field_app_email' => $form_state->getValue('email'),
+      'field_app_image' => $form_state->getValue('image'),
+      'field_app_name' => $form_state->getValue('name'),
+      'field_app_organisation' => $form_state->getValue('organisation'),
+      'field_app_type' => $form_state->getValue('type'),
     ));
     $node->save();
 
@@ -156,6 +153,10 @@ class AppForm extends FormBase {
 
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
+  }
+
+  public function title() {
+    return $this->t('Submit app');
   }
 
 }
