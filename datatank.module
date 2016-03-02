@@ -277,7 +277,7 @@ function datatank_available_formats($dataset) {
     if (strtolower($format->getName()) == 'map') {
       $formats[strtolower($format->getName())] = [
         'label' => $format->getName(),
-        'extensie' => '',
+        'extensie' => '.map',
       ];
     }
     else {
