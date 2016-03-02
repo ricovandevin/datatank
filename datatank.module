@@ -277,13 +277,13 @@ function datatank_available_formats($dataset) {
     if (strtolower($format->getName()) == 'map') {
       $formats[strtolower($format->getName())] = [
         'label' => $format->getName(),
-        'extensie' => '.map',
+        'extension' => '.map',
       ];
     }
     else {
       $formats[strtolower($format->getName())] = [
         'label' => $format->getName(),
-        'extensie' => '.' . strtolower($format->getName()),
+        'extension' => '.' . strtolower($format->getName()),
       ];
     }
 

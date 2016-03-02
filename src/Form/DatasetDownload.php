@@ -294,10 +294,10 @@ class DatasetDownload extends FormBase {
     $formats = datatank_available_formats($datatank_dataset);
     foreach ($formats as $key => $format) {
       if ($key == 'map') {
-        $url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extensie'], ['query' => $query]);
+        $url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extension'], ['query' => $query]);
       }
       else {
-        $data_url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extensie'], ['query' => $query]);
+        $data_url = Url::fromUri($config->getEndpoint() . $datatank_dataset->getName() . $format['extension'], ['query' => $query]);
         $url = Url::fromRoute('datatank.dataset_download_confirm_index', [], ['query' => ['download_url' => $data_url->toString()]]);
       }
 
