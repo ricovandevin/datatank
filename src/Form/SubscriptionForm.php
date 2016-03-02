@@ -73,6 +73,7 @@ class SubscriptionForm extends FormBase {
       $response = FlexmailHelper::subscribe(
         $form_state->getValue('email'),
         $flexmail_config->get('default_list_id'),
+        \Drupal::languageManager()->getCurrentLanguage()->getId(),
         $success_message
       );
 
@@ -85,5 +86,4 @@ class SubscriptionForm extends FormBase {
         }
       }
     }
-
 }
