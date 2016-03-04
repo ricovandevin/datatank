@@ -29,6 +29,7 @@ class AppForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $ln = \Drupal::languageManager()->getCurrentLanguage()->getId();
     $form['app'] = [
       '#markup' => '<h2>' . $this->t('Application details') . '</h2>'
     ];
@@ -71,7 +72,11 @@ class AppForm extends FormBase {
       ->loadTree('type');
     $types = [];
     foreach ($types_raw as $type) {
-      $types[$type->tid] = $type->name;
+      $entity = entity_load('taxonomy_term', $type->tid);
+      if ($entity->hasTranslation($ln)) {
+        $entity = $entity->getTranslation($ln);
+      }
+      $types[$type->tid] = $entity->getName();
     }
 
     $form['type'] = [
