@@ -74,7 +74,7 @@ class SubscriptionForm extends FormBase {
     $error_message = (string) check_markup($newsletter_error['value'], $newsletter_error['format']);
     $response = FlexmailHelper::subscribe(
       $form_state->getValue('email'),
-      $flexmail_config->get('default_list_id'),
+      FlexmailHelper::getListId(),
       \Drupal::languageManager()->getCurrentLanguage()->getId(),
       $success_message
     );
