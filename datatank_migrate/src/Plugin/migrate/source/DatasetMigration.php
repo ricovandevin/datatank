@@ -44,7 +44,12 @@ class DatasetMigration extends SourcePluginBase {
     $tax_fields = datatank_helper_get_tax_fields();
 
     foreach ($tax_fields as $field_name => $dest) {
-      $raw_values = explode(',', trim($fields[$dest]->getValue()));
+        $value = $fields[$dest]->getValue();
+        if (is_array($value)) {
+            $value = $value[0];
+        }
+
+        $raw_values = explode(',', trim($value));
 
       if (!empty($raw_values)) {
         $terms = [];
