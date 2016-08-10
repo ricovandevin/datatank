@@ -75,6 +75,11 @@ class DatasetMigration extends SourcePluginBase {
       ]);
     }
 
+    if (isset($fields['doc_uri'])) {
+      $row->setSourceProperty('extra_links', [
+        $fields['doc_uri']->getValue(),
+      ]);
+    }
 
     return parent::prepareRow($row);
   }
