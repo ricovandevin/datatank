@@ -175,7 +175,8 @@ function datatank_preprocess_datatank_dataset(&$variables) {
   // WFS has less features on detail page
   $type = taxonomy_term_load($dataset->field_dataset_type->get(0)
     ->getValue()['target_id']);
-  if ($type && $type->getName() == 'wfs') {
+
+  if ($type && in_array($type->getName(), ['wfs', 'doc'])) {
     $variables['wfs'] = TRUE;
   }
   else {
