@@ -3,6 +3,26 @@
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 
 /**
+ * Add menu items under 'news'
+ */
+function datatank_update_8004(){
+
+  $parent = MenuLinkContent::load(14);
+
+  MenuLinkContent::create([
+    'title' => 'Data News',
+    'link' => ['uri' => 'internal:/data-news'],
+    'parent' => $parent->getPluginId(),
+  ])->save();
+
+  MenuLinkContent::create([
+    'title' => 'Event News',
+    'link' => ['uri' => 'internal:/event-news'],
+    'parent' => $parent->getPluginId(),
+  ])->save();
+}
+
+/**
  * Update menu items for apps
  */
 function datatank_update_8003(){
