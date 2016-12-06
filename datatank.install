@@ -8,20 +8,20 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 function datatank_update_8003(){
   $item = MenuLinkContent::load(22);
   if($item->getTitle() == 'Gepubliceerde apps'){
-    $item->title('Gepubliceerde toepassingen');
+    $item->set('title', 'Gepubliceerde toepassingen');
     $item->save();
   }
 
 
   $item = MenuLinkContent::load(24);
   if($item->getTitle() == 'Je app indienen') {
-    $item->title('Je toepassing indienen');
+    $item->set('title', 'Je toepassing indienen');
     $item->save();
   }
 
   $item = MenuLinkContent::load(13);
   if($item->getTitle() == 'Apps') {
-    $item->title('Applications');
+    $item->set('title', 'Applications');
     $item->save();
   }
 }
