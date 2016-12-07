@@ -1,6 +1,42 @@
 <?php
 
 use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Add taxonomy terms to 'News Type'
+ */
+function datatank_update_8005(){
+
+  $term = Term::create(array(
+    'parent' => array(),
+    'name' => 'Data News',
+    'vid' => 'news_type',
+    'uid' => '45053342-deed-4956-8870-499949fb31da',
+  ));
+  $term->save();
+
+  $values = [
+    'name' => 'Data Nieuws'
+  ];
+
+  $term->addTranslation('nl', $values);
+  $term->save();
+
+  $term = Term::create(array(
+    'parent' => array(),
+    'name' => 'Event News',
+    'vid' => 'news_type',
+    'uid' => '0ef5cfd9-e5c7-418a-8ed6-6562da9c42dd',
+  ));
+
+  $values = [
+    'name' => 'Event Nieuws'
+  ];
+
+  $term->addTranslation('nl', $values);
+  $term->save();
+}
 
 /**
  * Add menu items under 'news'
