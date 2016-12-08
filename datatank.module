@@ -18,6 +18,15 @@ use Drupal\tdt_client\Client;
 use Drupal\tdt_client\Config\DrupalConfig;
 
 /**
+ * Implementing hook_mail_alter
+ */
+function datatank_mail_alter(&$message) {
+  if(isset($message['params']['contact_message']->getFields()['field_contact_email'][0]->value)) {
+    $message['headers']['Reply-to'] = $message['params']['contact_message']->getFields()['field_contact_email'][0]->value;
+  }
+}
+
+/**
  * Helper function to create textfield
  */
 function datatank_helper_create_textfield($entityManager, $field_name) {
