@@ -11,7 +11,8 @@ function datatank_update_8006(){
     'title' => 'Nieuws',
     'link' => ['uri' => 'internal:/data-news'],
     'menu_name' => 'main',
-    'uuid' => '8675dba6-a202-4ce5-abc1-37f06cb600df'
+    'uuid' => '8675dba6-a202-4ce5-abc1-37f06cb600df',
+    'expanded' => TRUE
   ])->save();
 }
 
