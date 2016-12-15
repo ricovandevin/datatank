@@ -11,6 +11,7 @@ function datatank_update_8006(){
     'title' => 'Nieuws',
     'link' => ['uri' => 'internal:/data-news'],
     'menu_name' => 'main',
+    'uuid' => '8675dba6-a202-4ce5-abc1-37f06cb600df'
   ])->save();
 }
 
@@ -23,7 +24,7 @@ function datatank_update_8005(){
     'parent' => array(),
     'name' => 'Data News',
     'vid' => 'news_type',
-    'uid' => '45053342-deed-4956-8870-499949fb31da',
+    'uuid' => '45053342-deed-4956-8870-499949fb31da',
   ));
   $term->save();
 
@@ -38,7 +39,7 @@ function datatank_update_8005(){
     'parent' => array(),
     'name' => 'Event News',
     'vid' => 'news_type',
-    'uid' => '0ef5cfd9-e5c7-418a-8ed6-6562da9c42dd',
+    'uuid' => '0ef5cfd9-e5c7-418a-8ed6-6562da9c42dd',
   ));
 
   $values = [
