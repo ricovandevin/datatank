@@ -4,6 +4,17 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\taxonomy\Entity\Term;
 
 /**
+ * Add menu item
+ */
+function datatank_update_8006(){
+  MenuLinkContent::create([
+    'title' => 'Nieuws',
+    'link' => ['uri' => 'internal:/data-news'],
+    'menu_name' => 'main',
+  ])->save();
+}
+
+/**
  * Add taxonomy terms to 'News Type'
  */
 function datatank_update_8005(){
