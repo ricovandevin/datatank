@@ -21,8 +21,10 @@ use Drupal\tdt_client\Config\DrupalConfig;
  * Implementing hook_mail_alter
  */
 function datatank_mail_alter(&$message) {
-  if(isset($message['params']['contact_message']->getFields()['field_contact_email'][0]->value)) {
-    $message['headers']['Reply-to'] = $message['params']['contact_message']->getFields()['field_contact_email'][0]->value;
+  if($message['id'] == 'contact_message'){
+    if(isset($message['params']['contact_message']->getFields()['field_contact_email'][0]->value)) {
+      $message['headers']['Reply-to'] = $message['params']['contact_message']->getFields()['field_contact_email'][0]->value;
+    }
   }
 }
 
