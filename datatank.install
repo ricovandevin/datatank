@@ -4,19 +4,6 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\taxonomy\Entity\Term;
 
 /**
- * Add menu item
- */
-function datatank_update_8006(){
-  MenuLinkContent::create([
-    'title' => 'Nieuws',
-    'link' => ['uri' => 'internal:/data-news'],
-    'menu_name' => 'main',
-    'uuid' => '8675dba6-a202-4ce5-abc1-37f06cb600df',
-    'expanded' => TRUE
-  ])->save();
-}
-
-/**
  * Add taxonomy terms to 'News Type'
  */
 function datatank_update_8005(){
@@ -56,16 +43,22 @@ function datatank_update_8005(){
  */
 function datatank_update_8004(){
 
-  $parent = MenuLinkContent::load(14);
+  $parent = MenuLinkContent::create([
+    'title' => 'Nieuws',
+    'link' => ['uri' => 'internal:/data-news'],
+    'menu_name' => 'main',
+    'uuid' => '8675dba6-a202-4ce5-abc1-37f06cb600df',
+    'expanded' => TRUE
+  ])->save();
 
   MenuLinkContent::create([
-    'title' => 'Data News',
+    'title' => 'Data Nieuws',
     'link' => ['uri' => 'internal:/data-news'],
     'parent' => $parent->getPluginId(),
   ])->save();
 
   MenuLinkContent::create([
-    'title' => 'Event News',
+    'title' => 'Event Nieuws',
     'link' => ['uri' => 'internal:/event-news'],
     'parent' => $parent->getPluginId(),
   ])->save();
