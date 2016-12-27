@@ -49,7 +49,9 @@ function datatank_update_8004(){
     'menu_name' => 'main',
     'uuid' => '8675dba6-a202-4ce5-abc1-37f06cb600df',
     'expanded' => TRUE
-  ])->save();
+  ]);
+
+  $parent->save();
 
   MenuLinkContent::create([
     'title' => 'Data Nieuws',
