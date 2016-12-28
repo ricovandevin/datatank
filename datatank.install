@@ -4,6 +4,38 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\taxonomy\Entity\Term;
 
 /**
+ * Update application menu links
+ */
+function datatank_update_8006(){
+  $parent = MenuLinkContent::load(13);
+  $parent->set('title', 'Toepassingen');
+  $parent->set('menu_name', 'main');
+  $parent->save();
+
+  // Update dutch child links of 'Toepassingen'
+  $child1 = MenuLinkContent::load(22);
+  $child1->set('parent', $parent->getPluginId());
+  $child1->set('menu_name', 'main');
+  $child1->save();
+
+  $child2 = MenuLinkContent::load(24);
+  $child2->set('parent', $parent->getPluginId());
+  $child2->set('menu_name', 'main');
+  $child2->save();
+
+  // Update english child links of 'Applications'
+  $child1 = MenuLinkContent::load(23);
+  $child1->set('parent', 'views_view:views.apps.page_1');
+  $child1->set('menu_name', 'hoofdnav');
+  $child1->save();
+
+  $child2 = MenuLinkContent::load(25);
+  $child2->set('parent', 'views_view:views.apps.page_1');
+  $child2->set('menu_name', 'hoofdnav');
+  $child2->save();
+}
+
+/**
  * Add taxonomy terms to 'News Type'
  */
 function datatank_update_8005(){
