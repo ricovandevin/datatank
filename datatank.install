@@ -75,6 +75,12 @@ function datatank_update_8005(){
  */
 function datatank_update_8004(){
 
+  //update url of news link
+  /** @var MenuLinkContent $link */
+  $link = MenuLinkContent::load(14);
+  $link->set('link', ['uri' => 'internal:/data-news']);
+  $link->save();
+
   $parent = MenuLinkContent::create([
     'title' => 'Nieuws',
     'link' => ['uri' => 'internal:/data-news'],
