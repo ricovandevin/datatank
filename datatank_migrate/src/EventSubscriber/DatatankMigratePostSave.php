@@ -97,7 +97,8 @@ class DatatankMigratePostSave implements EventSubscriberInterface {
               case 'longtext':
                 $values[$key]['value'] = isset($migrate_src_values[$value['key']]) ? $migrate_src_values[$value['key']] : $migrate_src_values['dataset']->getFields()[$value['key']]->getValue();
                 if (isset($translated_entity)) {
-                  $translated_entity->{$key}->setValue(utf8_decode($values[$key]['value']));
+                  //$translated_entity->{$key}->setValue(utf8_decode($values[$key]['value']));
+                  $translated_entity->{$key}->setValue($values[$key]['value']);
                 }
                 break;
             }
