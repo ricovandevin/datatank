@@ -1,5 +1,133 @@
 <?php
 
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Update application menu links
+ */
+function datatank_update_8006(){
+  $parent = MenuLinkContent::load(13);
+  $parent->set('title', 'Toepassingen');
+  $parent->set('menu_name', 'main');
+  $parent->save();
+
+  // Update dutch child links of 'Toepassingen'
+  $child1 = MenuLinkContent::load(22);
+  $child1->set('parent', $parent->getPluginId());
+  $child1->set('menu_name', 'main');
+  $child1->save();
+
+  $child2 = MenuLinkContent::load(24);
+  $child2->set('parent', $parent->getPluginId());
+  $child2->set('menu_name', 'main');
+  $child2->save();
+
+  // Update english child links of 'Applications'
+  $child1 = MenuLinkContent::load(23);
+  $child1->set('parent', 'views_view:views.apps.page_1');
+  $child1->set('menu_name', 'hoofdnav');
+  $child1->save();
+
+  $child2 = MenuLinkContent::load(25);
+  $child2->set('parent', 'views_view:views.apps.page_1');
+  $child2->set('menu_name', 'hoofdnav');
+  $child2->save();
+}
+
+/**
+ * Add taxonomy terms to 'News Type'
+ */
+function datatank_update_8005(){
+
+  $term = Term::create(array(
+    'parent' => array(),
+    'name' => 'Data News',
+    'vid' => 'news_type',
+    'uuid' => '45053342-deed-4956-8870-499949fb31da',
+  ));
+  $term->save();
+
+  $values = [
+    'name' => 'Data Nieuws'
+  ];
+
+  $term->addTranslation('nl', $values);
+  $term->save();
+
+  $term = Term::create(array(
+    'parent' => array(),
+    'name' => 'Event News',
+    'vid' => 'news_type',
+    'uuid' => '0ef5cfd9-e5c7-418a-8ed6-6562da9c42dd',
+  ));
+
+  $values = [
+    'name' => 'Event Nieuws'
+  ];
+
+  $term->addTranslation('nl', $values);
+  $term->save();
+}
+
+/**
+ * Add menu items under 'news'
+ */
+function datatank_update_8004(){
+
+  //update url of news link
+  /** @var MenuLinkContent $link */
+  $link = MenuLinkContent::load(14);
+  $link->set('link', ['uri' => 'internal:/data-news']);
+  $link->save();
+
+  $parent = MenuLinkContent::create([
+    'title' => 'Nieuws',
+    'link' => ['uri' => 'internal:/data-news'],
+    'menu_name' => 'main',
+    'uuid' => '8675dba6-a202-4ce5-abc1-37f06cb600df',
+    'expanded' => TRUE
+  ]);
+
+  $parent->save();
+
+  MenuLinkContent::create([
+    'title' => 'Data Nieuws',
+    'link' => ['uri' => 'internal:/data-news'],
+    'parent' => $parent->getPluginId(),
+  ])->save();
+
+  MenuLinkContent::create([
+    'title' => 'Event Nieuws',
+    'link' => ['uri' => 'internal:/event-news'],
+    'parent' => $parent->getPluginId(),
+  ])->save();
+}
+
+/**
+ * Update menu items for apps
+ */
+function datatank_update_8003(){
+  $item = MenuLinkContent::load(22);
+  if($item->getTitle() == 'Gepubliceerde apps'){
+    $item->set('title', 'Gepubliceerde toepassingen');
+    $item->save();
+  }
+
+
+  $item = MenuLinkContent::load(24);
+  if($item->getTitle() == 'Je app indienen') {
+    $item->set('title', 'Je toepassing indienen');
+    $item->save();
+  }
+
+  $item = MenuLinkContent::load(13);
+  if($item->getTitle() == 'Apps') {
+    $item->set('title', 'Applications');
+    $item->save();
+  }
+}
+
 /**
  * Delete all terms from keywords
  */
